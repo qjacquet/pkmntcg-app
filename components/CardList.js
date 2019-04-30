@@ -13,7 +13,6 @@ class CardList extends React.Component {
   }
 
   _displayDetailForCard = (idCard) => {
-    console.log("Display card " + idCard)
     this.props.navigation.navigate('CardDetail', {idCard: idCard})
   }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, TextInput, Button, Text, FlatList, ActivityIndicator } from 'react-native'
 import CardList from './CardList'
+import CardSetList from './CardSetList'
 import { getCards } from '../api/cards.api'
 
 class Search extends React.Component {
@@ -46,7 +47,6 @@ class Search extends React.Component {
   }
 
   _displayDetailForCard = (idCard) => {
-    console.log("Display card with id " + idCard)
     this.props.navigation.navigate("CardDetail", { idCard: idCard })
   }
 
@@ -63,6 +63,7 @@ class Search extends React.Component {
   render() {
     return (
       <View style={styles.main_container}>
+      {/* <CardSetList /> */}
         <TextInput
           style={styles.textinput}
           placeholder='Titre du card'
@@ -76,7 +77,7 @@ class Search extends React.Component {
           loadCards={this._loadCards}
           page={this.page}
           totalPages={this.totalPages}
-          favoriteList={false} // Ici j'ai simplement ajouté un booléen à false pour indiquer qu'on n'est pas dans le cas de l'affichage de la liste des cards favoris. Et ainsi pouvoir déclencher le chargement de plus de cards lorsque l'utilisateur scrolle.
+          favoriteList={false} // Ici j'ai simplement ajoutï¿½ un boolï¿½en ï¿½ false pour indiquer qu'on n'est pas dans le cas de l'affichage de la liste des cards favoris. Et ainsi pouvoir dï¿½clencher le chargement de plus de cards lorsque l'utilisateur scrolle.
         />
         {this._displayLoading()}
       </View>

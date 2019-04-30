@@ -13,8 +13,29 @@ export function getCardDetails(id) {
 		.then((response) => 
 			{
 				var result = response.cards.json()
-				console.log(result)
 				return result.cards[0]
 			})
 		.catch((error) => console.log(error))
+}
+
+export function getCardSets() {
+    const url = 'https://api.pokemontcg.io/v1/sets';
+    return fetch(url)
+		.then((response) => 
+			{
+				var result = response.json()
+				return result
+			})
+        .catch((error) => console.log(error))
+}
+
+export function getCardSetsStandard() {
+    const url = 'https://api.pokemontcg.io/v1/sets?standardLegal=true';
+    return fetch(url)
+		.then((response) => 
+			{
+				var result = response.json()
+				return result
+			})
+        .catch((error) => console.log(error))
 }
