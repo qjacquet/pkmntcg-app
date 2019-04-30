@@ -21,7 +21,6 @@ class Search extends React.Component {
     if (this.searchedText.length > 0) {
       this.setState({ isLoading: true })
       getCards(1).then(data => {
-			console.log(JSON.stringify(data))
           this.page = 1
           //this.totalPages = data.total_pages
           this.setState({
