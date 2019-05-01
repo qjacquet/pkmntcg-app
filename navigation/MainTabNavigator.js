@@ -6,27 +6,14 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import CardSearch from '../components/CardSearch';
 
-// const HomeStack = createStackNavigator({
-//   Home: HomeScreen,
-// });
-
-// HomeStack.navigationOptions = {
-//   tabBarLabel: 'Home',
-//   tabBarIcon: ({ focused }) => (
-//     <TabBarIcon
-//       focused={focused}
-//       name={
-//         Platform.OS === 'ios'
-//           ? `ios-information-circle${focused ? '' : '-outline'}`
-//           : 'md-information-circle'
-//       }
-//     />
-//   ),
-// };
-
 const HomeStack = createStackNavigator({
-	Home: CardSearch,
- });
+	Home: {
+		screen: CardSearch,
+		navigationOptions: {
+			title: 'Recherche',
+		},
+	}
+})
  
  HomeStack.navigationOptions = {
 	tabBarLabel: 'Home',

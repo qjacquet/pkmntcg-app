@@ -13,6 +13,12 @@ class CardSetList extends React.Component {
     }
   }
 
+  _toggleCardSet(cardSetCode) {
+    const action = { type: "TOGGLE_CARDSET", value: cardSetCode }
+    this.props.dispatch(action)
+    console.log(this.state)
+  }
+
   componentDidMount() {
     getCardSetsStandard().then(data => {
       this.setState({
@@ -21,20 +27,20 @@ class CardSetList extends React.Component {
     })
   }
 
-  render() {    
-    console.log(this.state.cardSets)
+  render() {
     if (this.state.cardSets.length == 0){
       return null
     }
     return (
+      <View style={styles.list}>
         <FlatList
           data={this.state.cardSets}
+          horizontal={true}
           keyExtractor={(item) => item.code.toString()}
           renderItem={({item}) => (
             <View>
             <TouchableOpacity
-              onPress={() => {}}>
-              <Text>{item.name}</Text>
+              onPress={() => { this._toggleCardSet() }}>
               <Image
                 style={styles.image}
                 source={{uri: item.symbolUrl}}
@@ -43,13 +49,14 @@ class CardSetList extends React.Component {
           </View>
 			    )}
         />
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
   list: {
-    flex: 1
+    height: 50
   },
   image: {
     width: 30,
@@ -58,9 +65,10 @@ const styles = StyleSheet.create({
   },
 })
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
+    selectedSets: state.cardSearchFilter.selectedSets
   }
 }
 
-export default CardSetList
+export default connect(mapStateToProps)(CardSetList)

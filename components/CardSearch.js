@@ -63,7 +63,6 @@ class Search extends React.Component {
   render() {
     return (
       <View style={styles.main_container}>
-      {/* <CardSetList /> */}
         <TextInput
           style={styles.textinput}
           placeholder='Titre du card'
@@ -71,6 +70,7 @@ class Search extends React.Component {
           onSubmitEditing={() => this._searchCards()}
         />
         <Button title='Rechercher' onPress={() => this._searchCards()}/>
+        <CardSetList />
         <CardList
           cards={this.state.cards}
           navigation={this.props.navigation}
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
 })
 
 export default Search

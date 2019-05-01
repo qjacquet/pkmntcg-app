@@ -7,6 +7,13 @@ export function getCards(page) {
         .catch((error) => console.log(error))
 }
 
+export function getCardsFromCardSet(cardSetCode) {
+	const url = 'https://api.pokemontcg.io/v1/cards?setCode=' + cardSetCode;
+	return fetch(url)
+			.then((response) => response.json())
+			.catch((error) => console.log(error))
+}
+
 export function getCardDetails(id) {
 	const url = 'https://api.pokemontcg.io/v1/cards?id=' + id;
 	return fetch(url)
