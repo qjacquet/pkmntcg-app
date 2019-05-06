@@ -5,6 +5,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import CardSearch from '../components/CardSearch';
+import CardSetsList from '../components/CardSetsList/CardSetsList';
 
 const HomeStack = createStackNavigator({
 	Home: {
@@ -14,6 +15,16 @@ const HomeStack = createStackNavigator({
 		},
 	}
 })
+
+const CardSetsStackNavigator = createStackNavigator({
+	CardSetsList: {
+	  screen: CardSetsList,
+	  navigationOptions: {
+		 title: 'Extensions'
+	  }
+	}
+ })
+ 
  
  HomeStack.navigationOptions = {
 	tabBarLabel: 'Home',
@@ -30,5 +41,6 @@ const HomeStack = createStackNavigator({
  };
 
 export default createBottomTabNavigator({
-  HomeStack
+  HomeStack,
+  CardSetsStackNavigator
 });

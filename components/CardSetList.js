@@ -71,4 +71,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(CardSetList)
+export default (CardSetList)
