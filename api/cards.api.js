@@ -1,15 +1,16 @@
 const API_TOKEN = '';
 
-export function getCards(page) {
+export function getCards(filter, page) {
     const url = 'https://api.pokemontcg.io/v1/cards?page=' + page;
     return fetch(url)
         .then((response) => response.json())
         .catch((error) => console.log(error))
 }
 
-export function getCardsFromCardSet(cardSetCode) {
-	const url = 'https://api.pokemontcg.io/v1/cards?setCode=' + cardSetCode;
-	return fetch(url)
+export function getCardsFromCardSet(cardSetCode, page) {
+	const url = 'https://api.pokemontcg.io/v1/cards?setCode=' + cardSetCode + "&page=" + page;
+
+	return fetch(url, { headers: header	})
 			.then((response) => response.json())
 			.catch((error) => console.log(error))
 }

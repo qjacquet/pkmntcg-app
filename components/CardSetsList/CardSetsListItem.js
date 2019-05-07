@@ -16,11 +16,6 @@ class CardSetsListItem extends React.Component {
 		this._displayCardList = this._displayCardList.bind(this)
 	 }
 
-	 _displayCardList = (codeSet) => {
-		this._loadCardsFromCardSet(codeSet)
-		this.props.navigation.navigate('CardList', {cards: this.state.cards})
-	 }
-
 	_loadCardsFromCardSet(codeSet) {
 		this.setState({ isLoading: true })
 		getCardsFromCardSet(codeSet).then(data => {
@@ -33,13 +28,17 @@ class CardSetsListItem extends React.Component {
 		})
 	}
 
+	_displayCardList(setCode){
+		this.props.navigation.navigate('CardList', {filter: { setCode: setCode}})
+	}
+
   render() {
 	 const { cardSet } = this.props
     return (
       <View>
         <TouchableOpacity
           style={styles.main_container}
-          onPress={() => { this._loadCardsFromCardSet(cardSet.code) }}>
+          onPress={() => { this._displayCardList(cardSet.code) }}>
           <Image
             style={styles.image}
             source={{uri: cardSet.logoUrl}}
