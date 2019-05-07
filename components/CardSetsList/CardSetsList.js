@@ -13,11 +13,6 @@ class CardSetsList extends React.Component {
 		}
 	}
 
-
-	_displayDetailForCardSet = (idCardSet) => {
-		//this.props.navigation.navigate('CardSetDetail', { idCardSet: idCardSet })
-	}
-
 	componentDidMount() {
 		getCardSetsStandard().then(data => {
 			this.setState({
@@ -42,6 +37,7 @@ class CardSetsList extends React.Component {
 				renderItem={({ item }) => (
 					<CardSetsListItem
 						cardSet={item}
+						navigation={this.props.navigation}
 					/>
 				)}
 				numColumns={2}

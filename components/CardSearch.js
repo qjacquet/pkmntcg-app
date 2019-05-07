@@ -70,7 +70,7 @@ class Search extends React.Component {
           onSubmitEditing={() => this._searchCards()}
         />
         <Button title='Rechercher' onPress={() => this._searchCards()}/>
-        <CardSetList />
+        {/* <CardSetList /> */}
         <CardList
           cards={this.state.cards}
           navigation={this.props.navigation}

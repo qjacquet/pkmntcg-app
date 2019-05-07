@@ -1,33 +1,49 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions } from 'react-native'
 import moment from 'moment'
+import { getCardsFromCardSet } from '../../api/cards.api'
 
 class CardSetsListItem extends React.Component {
 
-//   _displayFavoriteImage() {
-//     if (this.props.isCardFavorite) {
-//       // Si la props isCardFavorite vaut true, on affiche le ??
-//       return (
-//         <Image
-//           style={styles.favorite_image}
-//           source={require('../Images/ic_favorite.png')}
-//         />
-//       )
-//     }
-//   }
+	constructor(props) {
+		super(props)
+		this.state = {
+		  cards: [],
+		  filter: undefined,
+		  isLoading: false
+		}
+		this._loadCardsFromCardSet = this._loadCardsFromCardSet.bind(this)
+		this._displayCardList = this._displayCardList.bind(this)
+	 }
+
+	 _displayCardList = (codeSet) => {
+		this._loadCardsFromCardSet(codeSet)
+		this.props.navigation.navigate('CardList', {cards: this.state.cards})
+	 }
+
+	_loadCardsFromCardSet(codeSet) {
+		this.setState({ isLoading: true })
+		getCardsFromCardSet(codeSet).then(data => {
+				this.setState({
+					cards: [ ...this.state.cards, ...data.cards ],
+					isLoading: false
+				}, function () {
+					this.props.navigation.navigate('CardList', {cards: this.state.cards})
+			  })
+		})
+	}
 
   render() {
-	 const { cardSet, displayDetailForCardSet } = this.props
+	 const { cardSet } = this.props
     return (
       <View>
         <TouchableOpacity
           style={styles.main_container}
-          onPress={() => {}}>
+          onPress={() => { this._loadCardsFromCardSet(cardSet.code) }}>
           <Image
             style={styles.image}
             source={{uri: cardSet.logoUrl}}
           />
-			 <Text>ddsdqs</Text>
         </TouchableOpacity>
       </View>
     )
@@ -36,13 +52,18 @@ class CardSetsListItem extends React.Component {
 
 const styles = StyleSheet.create({
 	main_container: {
+		flex: 1,
+		flexDirection: 'row',
 		height: 100,
-		flexDirection: 'row'
+		width: (Dimensions.get('window').width / 2),
+		padding: 10
 	 },
 	 image: {
-		height: 50,
-		width: Dimensions.get('window').width / 2,
-		margin: 5
+		flex: 1,
+		width: 100,
+		height: 100,
+		resizeMode: 'contain'
+
 	 }
 })
 

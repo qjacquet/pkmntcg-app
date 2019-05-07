@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import CardSearch from '../components/CardSearch';
 import CardSetsList from '../components/CardSetsList/CardSetsList';
+import CardList from '../components/CardList/CardList';
 
 const HomeStack = createStackNavigator({
 	Home: {
@@ -22,6 +23,9 @@ const CardSetsStackNavigator = createStackNavigator({
 	  navigationOptions: {
 		 title: 'Extensions'
 	  }
+	},
+	CardList: {
+		screen: CardList
 	}
  })
  
