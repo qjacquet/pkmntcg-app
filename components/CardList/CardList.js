@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, FlatList, View, ActivityIndicator, Text } from 'react-native'
+import { StyleSheet, FlatList, View, ActivityIndicator, Text, Dimensions } from 'react-native'
 import CardItem from '../CardItem'
 import { connect } from 'react-redux'
 import { getCards } from '../../api/cards.api'
@@ -15,24 +15,26 @@ class CardList extends React.Component {
       cardFilter: undefined,
       isLoading: false
    }
-   this._loadCards = this._loadCards.bind(this)
+	this._loadCards = this._loadCards.bind(this)
+	this.screenWidth = Dimensions.width;
   }
 
   componentDidMount() {
 		if (this.props.navigation.state.params.filter != undefined) {
+			console.log(this.props.navigation.state.params.filter)
 			this.setState({
-        cardFilter: this.props.navigation.state.params.cardFilter
+        		cardFilter: this.props.navigation.state.params.filter
 			}, () => {
         this._loadCards()
       })
 		}
   } 
-  
+
   _loadCards(){
     this.setState({ isLoading: true })
     getCards(this.state.cardFilter, this.page+1).then(data => {
         this.page = data.page
-        this.totalPages = data.total_pages
+        this.totalPages = data.totalPages
         this.setState({
           cards: [ ...this.state.cards, ...data.cards ],
           isLoading: false
@@ -55,14 +57,12 @@ class CardList extends React.Component {
   }
 
   render() {
-    console.log((this.state.cards[0]))
     return (
-      <View>
         <FlatList
           style={styles.list}
           data={this.state.cards}
           extraData={this.state}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id}
           renderItem={({item}) => (
             <CardItem
               card={item}
@@ -77,15 +77,14 @@ class CardList extends React.Component {
             }
           }}
         />
-        {this._displayLoading()}
-      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
   list: {
-    flex: 1
+	 flex: 1,
+	 width: this.screenWidth
   },
   loading_container: {
     position: 'absolute',

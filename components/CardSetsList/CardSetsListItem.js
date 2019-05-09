@@ -29,7 +29,7 @@ class CardSetsListItem extends React.Component {
 	}
 
 	_displayCardList(setCode){
-		this.props.navigation.navigate('CardList', {filter: { setCode: setCode}})
+		this.props.navigation.navigate('CardList', {filter: "&setCode="+setCode })
 	}
 
   render() {
