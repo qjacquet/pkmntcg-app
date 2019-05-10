@@ -9,7 +9,7 @@ class CardList extends React.Component {
   constructor(props) {
     super(props)
     this.page = 0
-    this.totalPages = 0
+    this.nextPage = 0
     this.state = {
       cards: [],
       cardFilter: undefined,
@@ -33,8 +33,9 @@ class CardList extends React.Component {
   _loadCards(){
     this.setState({ isLoading: true })
     getCards(this.state.cardFilter, this.page+1).then(data => {
-        this.page = data.page
-        this.totalPages = data.totalPages
+		  this.page = data.page
+		  console.log(data.page)
+        this.nextPage = data.nextPage
         this.setState({
           cards: [ ...this.state.cards, ...data.cards ],
           isLoading: false
@@ -72,7 +73,7 @@ class CardList extends React.Component {
           numColumns={3}
           onEndReachedThreshold={0.5}
           onEndReached={() => {
-            if (this.page < this.totalPages) {
+            if (this.page < this.nextPage) {
               this._loadCards()
             }
           }}
