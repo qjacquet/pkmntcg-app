@@ -28,8 +28,11 @@ class CardSetsListItem extends React.Component {
 		})
 	}
 
-	_displayCardList(setCode){
-		this.props.navigation.navigate('CardList', {filter: "&setCode="+setCode })
+	_displayCardList(cardSet){
+		this.props.navigation.navigate('CardList', {
+			filter: "&setCode=" + cardSet.code,
+			screenTitle: cardSet.name
+		})
 	}
 
   render() {
@@ -38,7 +41,7 @@ class CardSetsListItem extends React.Component {
       <View>
         <TouchableOpacity
           style={styles.main_container}
-          onPress={() => { this._displayCardList(cardSet.code) }}>
+          onPress={() => { this._displayCardList(cardSet) }}>
           <Image
             style={styles.image}
             source={{uri: cardSet.logoUrl}}

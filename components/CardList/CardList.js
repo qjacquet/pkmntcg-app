@@ -2,9 +2,16 @@ import React from 'react'
 import { StyleSheet, FlatList, View, ActivityIndicator, Text, Dimensions } from 'react-native'
 import CardItem from '../CardItem'
 import { connect } from 'react-redux'
-import { getCards } from '../../api/cards.api'
+import { getAllCards } from '../../api/cards.api'
 
 class CardList extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+    const { state: { params = {} } } = navigation;
+    return {
+      title: params.screenTitle || 'Liste des cartes',
+    };
+  }
 
   constructor(props) {
     super(props)
@@ -21,23 +28,24 @@ class CardList extends React.Component {
 
   componentDidMount() {
 		if (this.props.navigation.state.params.filter != undefined) {
-			console.log(this.props.navigation.state.params.filter)
 			this.setState({
         		cardFilter: this.props.navigation.state.params.filter
 			}, () => {
         this._loadCards()
       })
 		}
-  } 
+  }
 
-  _loadCards(){
+  _loadCards() {
     this.setState({ isLoading: true })
-    getCards(this.state.cardFilter, this.page+1).then(data => {
-		  this.page = data.page
-		  console.log(data.page)
-        this.nextPage = data.nextPage
+    getAllCards(this.state.cardFilter).then(data => {
+        // Order by number
+        var cards = data.cards.sort(function(a, b) { return a.number - b.number }) 
         this.setState({
-          cards: [ ...this.state.cards, ...data.cards ],
+          cards: [ 
+            ...this.state.cards, 
+            ...cards
+          ],
           isLoading: false
         })
     })
@@ -73,9 +81,7 @@ class CardList extends React.Component {
           numColumns={3}
           onEndReachedThreshold={0.5}
           onEndReached={() => {
-            if (this.page < this.nextPage) {
-              this._loadCards()
-            }
+              //this._loadCards()
           }}
         />
     )

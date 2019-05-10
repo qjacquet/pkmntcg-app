@@ -3,21 +3,17 @@ const API_TOKEN = '';
 export function getCards(filter, page) {
 	 const url = 'https://api.pokemontcg.io/v1/cards?page=' + page + filter;
     return fetch(url)
-        .then((response) => response.json())
+      .then((response) => response.json())
 		  .catch((error) => console.log(error))
-		  
-
-	// fetch(url).then(response => 
-	// 	response.json().then(data => ({
-	// 		data: data,
-	// 		page: page,
-	// 		nextPage = getPageFromUrl(getNextPageUrlFromLinks(parse_link_header(response.headers.map.link)))
-	// 	})
-	// ).then(res => {
-	// 		console.log(res.status, res.data.title)
-	// }))
-	// .catch((error) => console.log(error))		  
 }
+
+export function getAllCards(filter) {
+	const url = 'https://api.pokemontcg.io/v1/cards?' + filter + '&pageSize=1000';
+	 return fetch(url)
+		 .then((response) => response.json())
+		 .catch((error) => console.log(error))
+}
+
 
 export function getCardsFromCardSet(cardSetCode, page) {
 	const url = 'https://api.pokemontcg.io/v1/cards?setCode=' + cardSetCode + "&page=" + page;

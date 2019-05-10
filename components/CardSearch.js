@@ -2,15 +2,14 @@ import React from 'react'
 import { StyleSheet, View, TextInput, Button, Text, FlatList, ActivityIndicator } from 'react-native'
 import CardList from './CardList'
 import CardSetList from './CardSetList'
-import { getCards } from '../api/cards.api'
+import { getAllCards } from '../api/cards.api'
 
 class Search extends React.Component {
 
   constructor(props) {
     super(props)
     this.searchedText = ""
-    this.page = 0
-    this.totalPages = 0
+    this.filter = undefined
     this.state = {
       cards: [],
       isLoading: false
@@ -21,7 +20,7 @@ class Search extends React.Component {
   _loadCards() {
     if (this.searchedText.length > 0) {
       this.setState({ isLoading: true })
-      getCards(1).then(data => {
+      getAllCards(this.filter).then(data => {
           this.page = 1
           //this.totalPages = data.total_pages
           this.setState({
@@ -37,8 +36,7 @@ class Search extends React.Component {
   }
 
   _searchCards() {
-    this.page = 0
-    this.totalPages = 0
+    this.filter = "&name=" + this.searchedText
     this.setState({
       cards: [],
     }, () => {
@@ -74,10 +72,7 @@ class Search extends React.Component {
         <CardList
           cards={this.state.cards}
           navigation={this.props.navigation}
-          loadCards={this._loadCards}
-          page={this.page}
-          totalPages={this.totalPages}
-          favoriteList={false} // Ici j'ai simplement ajout� un bool�en � false pour indiquer qu'on n'est pas dans le cas de l'affichage de la liste des cards favoris. Et ainsi pouvoir d�clencher le chargement de plus de cards lorsque l'utilisateur scrolle.
+          loadCards={this._loadCards}        
         />
         {this._displayLoading()}
       </View>
