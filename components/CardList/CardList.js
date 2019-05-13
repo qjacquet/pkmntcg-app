@@ -19,34 +19,34 @@ class CardList extends React.Component {
     this.nextPage = 0
     this.state = {
       cards: [],
-		cardFilter: undefined,
-		selectModeEnabled: false,
+		  cardFilter: undefined,
+		  selectModeEnabled: false,
       isLoading: false
-   }
-	this._loadCards = this._loadCards.bind(this)
-	this.screenWidth = Dimensions.width;
+    }
+    this._loadCards = this._loadCards.bind(this)
+    this.screenWidth = Dimensions.width;
   }
 
   componentDidMount() {
 		if (this.props.navigation.state.params != undefined) {
 			this.setState({
-				cardFilter: this.props.navigation.state.params.filter || "" // filtre contenant les paramètres pour l'url de l'api... à améliorer
+				cardFilter: this.props.navigation.state.params.filter || "" // filtre contenant les paramï¿½tres pour l'url de l'api... ï¿½ amï¿½liorer
 			}, () => {
 				this._loadCards()
 			})
 			this.setState({
-				selectModeEnabled: this.props.navigation.state.params.selectModeEnabled || this.props.selectModeEnabled || false	//  force ou non le mode "séléction" depuis l'écran appelant 
+				selectModeEnabled: this.props.navigation.state.params.selectModeEnabled || this.props.selectModeEnabled || false	//  force ou non le mode "sï¿½lï¿½ction" depuis l'ï¿½cran appelant 
 			})
 		}
 		else {
 			this.setState({
-				cardFilter: this.props.filter || "" // filtre contenant les paramètres pour l'url de l'api... à améliorer
+				cardFilter: this.props.filter || "" // filtre contenant les paramï¿½tres pour l'url de l'api... ï¿½ amï¿½liorer
 			}, () => {
 				this._loadCards()
 			})
 
 			this.setState({
-				selectModeEnabled: this.props.selectModeEnabled || false	//  force ou non le mode "séléction" depuis l'écran appelant 
+				selectModeEnabled: this.props.selectModeEnabled || false	//  force ou non le mode "sï¿½lï¿½ction" depuis l'ï¿½cran appelant 
 			})
 		}
   }
@@ -94,16 +94,16 @@ class CardList extends React.Component {
   }
 
   render() {
-	  //console.log(this.state.selectModeEnabled)
+	  console.log(this.props.selectedCards)
     return (
         <FlatList
           style={styles.list}
           data={this.props.cards || this.state.cards}
-          extraData={this.state}
+          extraData={this.props.selectedCards}
           keyExtractor={(item) => item.id}
           renderItem={({item}) => (
             <CardItem
-				  selectModeEnabled = {this.state.selectModeEnabled}
+				      selectModeEnabled = {this.state.selectModeEnabled}
               card={item}
               displayDetailForCard={this._displayDetailForCard}
             />
@@ -134,9 +134,10 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
+    selectedCards: state.toggleCard.selectedCards
   }
 }
 
-export default CardList
+export default connect(mapStateToProps)(CardList)

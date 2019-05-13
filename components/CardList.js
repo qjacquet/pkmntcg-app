@@ -24,11 +24,12 @@ class CardList extends React.Component {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({item}) => (
             <CardItem
-				  card={item}
+          card={item}
+          id={item.id.toString()}
 				  displayDetailForCard={this._displayDetailForCard}
             />
-			 )}
-			 numColumns={3}
+			    )}
+			    numColumns={3}
           onEndReachedThreshold={0.5}
           onEndReached={() => {
             if (!this.props.favoriteList && this.props.page < this.props.totalPages) {

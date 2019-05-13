@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions, CheckBox } from 'react-native'
 import moment from 'moment'
 import FadeIn from '../Animation/FadeIn'
+import { connect } from 'react-redux'
 
 class CardItem extends React.Component {
 
@@ -13,19 +14,25 @@ class CardItem extends React.Component {
 		  selectedIds: [],
 		  isLoading: false
 	  }
-	  this._toggleCheckbox = this._toggleCheckbox.bind(this)
+		//this._toggleCheckbox = this._toggleCheckbox.bind(this)
+		this._toggleCard = this._toggleCard.bind(this)		
 	}
 
-	_toggleCheckbox(id) {
-		const selectedIds = {...this.state.selectedIds}
-		if (selectedIds[id]) {
-			selectedIds[id] = false;
-		}
-		else {
-			selectedIds[id] = true;
-		}
-		this.setState({ selectedIds: selectedIds });
-	}
+	_toggleCard(card) {
+    const action = { type: "TOGGLE_CARD", value: card }
+		this.props.dispatch(action)
+  }
+
+	// _toggleCheckbox(id) {
+	// 	const selectedIds = {...this.state.selectedIds}
+	// 	if (selectedIds[id]) {
+	// 		selectedIds[id] = false;
+	// 	}
+	// 	else {
+	// 		selectedIds[id] = true;
+	// 	}
+	// 	this.setState({ selectedIds: selectedIds });
+	// }
 
 	_displayCheckbox(selectModeEnabled, id){
 		if (selectModeEnabled) {
@@ -33,8 +40,8 @@ class CardItem extends React.Component {
 				<View>
 				  	<CheckBox 
 						style={styles.checkbox}
-						value = { this.state.selectedIds[id] }
-						onChange = {() => this._toggleCheckbox(id)}
+						value = { this.state.selectedCards[id] }
+						onChange = {() => this._toggleCard(id)}
 					/>
 				</View>
 			 )
@@ -53,10 +60,16 @@ class CardItem extends React.Component {
             source={{uri: card.imageUrl}}
           />
         </TouchableOpacity>
-		  {this._displayCheckbox(selectModeEnabled, card.id)}
+				{ selectModeEnabled && 
+					<CheckBox 
+						style={ styles.checkbox }
+						value = { this.props.selectedCards[card.id] }
+						onChange = {() => this._toggleCard(card)}
+					/>
+				}
       </View>
     )
-  }
+	}
 }
 
 const styles = StyleSheet.create({
@@ -71,7 +84,13 @@ const styles = StyleSheet.create({
   },
   checkbox: {
 	  position: 'absolute'
-  }
+	}
 })
 
-export default CardItem
+const mapStateToProps = (state) => {
+  return {
+    selectedCards: state.toggleCard.selectedCards
+  }
+}
+
+export default connect(mapStateToProps)(CardItem)

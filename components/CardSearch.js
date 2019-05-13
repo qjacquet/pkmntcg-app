@@ -67,7 +67,7 @@ class Search extends React.Component {
         <CardList
           cards={this.state.cards}
           navigation={this.props.navigation}
-			 selectModeEnabled = {true}     
+			    selectModeEnabled = {true}     
         />
         {this._displayLoading()}
       </View>
