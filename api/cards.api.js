@@ -8,7 +8,10 @@ export function getCards(filter, page) {
 }
 
 export function getAllCards(filter) {
-	const url = 'https://api.pokemontcg.io/v1/cards?' + filter + '&pageSize=1000';
+	if (filter == "") {
+		return null
+	}
+	const url = 'https://api.pokemontcg.io/v1/cards?pageSize=1000' + filter;
 	 return fetch(url)
 		 .then((response) => response.json())
 		 .catch((error) => console.log(error))

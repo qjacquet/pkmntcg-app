@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TextInput, Button, Text, FlatList, ActivityIndicator } from 'react-native'
-import CardList from './CardList'
+import CardList from './CardList/CardList'
 import CardSetList from './CardSetList'
 import { getAllCards } from '../api/cards.api'
 
@@ -14,15 +14,14 @@ class Search extends React.Component {
       cards: [],
       isLoading: false
     }
-    this._loadCards = this._loadCards.bind(this)
+	 this._loadCards = this._loadCards.bind(this)
+	 this._searchCards = this._searchCards.bind(this)
   }
 
   _loadCards() {
     if (this.searchedText.length > 0) {
       this.setState({ isLoading: true })
       getAllCards(this.filter).then(data => {
-          this.page = 1
-          //this.totalPages = data.total_pages
           this.setState({
             cards: [ ...this.state.cards, ...data.cards ],
             isLoading: false
@@ -72,7 +71,7 @@ class Search extends React.Component {
         <CardList
           cards={this.state.cards}
           navigation={this.props.navigation}
-          loadCards={this._loadCards}        
+			 selectModeEnabled = {true}     
         />
         {this._displayLoading()}
       </View>

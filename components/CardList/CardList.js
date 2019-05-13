@@ -19,7 +19,8 @@ class CardList extends React.Component {
     this.nextPage = 0
     this.state = {
       cards: [],
-      cardFilter: undefined,
+		cardFilter: undefined,
+		selectModeEnabled: false,
       isLoading: false
    }
 	this._loadCards = this._loadCards.bind(this)
@@ -27,28 +28,51 @@ class CardList extends React.Component {
   }
 
   componentDidMount() {
-		if (this.props.navigation.state.params.filter != undefined) {
+		if (this.props.navigation.state.params != undefined) {
 			this.setState({
-        		cardFilter: this.props.navigation.state.params.filter
+				cardFilter: this.props.navigation.state.params.filter || "" // filtre contenant les paramètres pour l'url de l'api... à améliorer
 			}, () => {
-        this._loadCards()
-      })
+				this._loadCards()
+			})
+			this.setState({
+				selectModeEnabled: this.props.navigation.state.params.selectModeEnabled || this.props.selectModeEnabled || false	//  force ou non le mode "séléction" depuis l'écran appelant 
+			})
+		}
+		else {
+			this.setState({
+				cardFilter: this.props.filter || "" // filtre contenant les paramètres pour l'url de l'api... à améliorer
+			}, () => {
+				this._loadCards()
+			})
+
+			this.setState({
+				selectModeEnabled: this.props.selectModeEnabled || false	//  force ou non le mode "séléction" depuis l'écran appelant 
+			})
 		}
   }
 
+  _toggleSelectMode(){
+		this.setState({
+			selectModeEnabled: !this.state.selectModeEnabled
+		})
+  }
+
   _loadCards() {
-    this.setState({ isLoading: true })
-    getAllCards(this.state.cardFilter).then(data => {
-        // Order by number
-        var cards = data.cards.sort(function(a, b) { return a.number - b.number }) 
-        this.setState({
-          cards: [ 
-            ...this.state.cards, 
-            ...cards
-          ],
-          isLoading: false
-        })
-    })
+		if (this.state.cardFilter == "") {
+			return null
+		}
+		this.setState({ isLoading: true })
+		getAllCards(this.state.cardFilter).then(data => {
+			// Order by number
+			var cards = data.cards.sort(function(a, b) { return a.number - b.number }) 
+			this.setState({
+				cards: [ 
+					...this.state.cards, 
+					...cards
+				],
+				isLoading: false
+			})
+		})
   }
 
   _displayDetailForCard = (idCard) => {
@@ -66,14 +90,16 @@ class CardList extends React.Component {
   }
 
   render() {
+	  //console.log(this.state.selectModeEnabled)
     return (
         <FlatList
           style={styles.list}
-          data={this.state.cards}
+          data={this.props.cards || this.state.cards}
           extraData={this.state}
           keyExtractor={(item) => item.id}
           renderItem={({item}) => (
             <CardItem
+				  selectModeEnabled = {this.state.selectModeEnabled}
               card={item}
               displayDetailForCard={this._displayDetailForCard}
             />
