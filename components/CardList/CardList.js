@@ -51,6 +51,10 @@ class CardList extends React.Component {
 		}
   }
 
+  _displayDetailForCard = (idCard) => {
+		this.props.navigation.navigate('CardDetail', {idCard: idCard})
+  }
+
   _toggleSelectMode(){
 		this.setState({
 			selectModeEnabled: !this.state.selectModeEnabled
@@ -75,8 +79,8 @@ class CardList extends React.Component {
 		})
   }
 
-  _displayDetailForCard = (idCard) => {
-    this.props.navigation.navigate('CardDetail', {idCard: idCard})
+  _displayDetailForCard = (id) => {
+    this.props.navigation.navigate('CardDetails', {id: id})
   }
 
   _displayLoading() {

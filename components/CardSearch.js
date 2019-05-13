@@ -43,10 +43,6 @@ class Search extends React.Component {
     })
   }
 
-  _displayDetailForCard = (idCard) => {
-    this.props.navigation.navigate("CardDetail", { idCard: idCard })
-  }
-
   _displayLoading() {
     if (this.state.isLoading) {
       return (

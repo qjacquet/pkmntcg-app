@@ -41,15 +41,16 @@ class CardDetail extends React.Component {
   }
 
   componentDidMount() {
-    const favoriteCardIndex = this.props.favoritesCard.findIndex(item => item.id === this.props.navigation.state.params.idCard)
-    if (favoriteCardIndex !== -1) {
-      this.setState({
-        card: this.props.favoritesCard[favoriteCardIndex]
-      }, () => { this._updateNavigationParams() })
-      return
-    }
+   //  const favoriteCardIndex = this.props.favoritesCard.findIndex(item => item.id === this.props.navigation.state.params.idCard)
+   //  if (favoriteCardIndex !== -1) {
+   //    this.setState({
+   //      card: this.props.favoritesCard[favoriteCardIndex]
+   //    }, () => { this._updateNavigationParams() })
+   //    return
+	//  }
+	console.log(this.props.navigation.state.params.id)
 	 this.setState({ isLoading: true })
-    getCardDetails(this.props.navigation.state.params.idCard).then(data => {
+    getCardDetails(this.props.navigation.state.params.id).then(data => {
       this.setState({
         card: data,
         isLoading: false
@@ -231,4 +232,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(CardDetail)
+export default CardDetail
