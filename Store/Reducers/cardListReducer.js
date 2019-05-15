@@ -4,8 +4,9 @@ function toggleCard(state = initialState, action) {
   let nextState
   switch (action.type) {
     case 'TOGGLE_CARD':
-      const cardIndex = state.selectedCards.findIndex(item => item.id === action.value)
+      const cardIndex = state.selectedCards.findIndex(item => item.id === action.value.id)
       if (cardIndex !== -1) {
+        console.log("remove")
         // Le film est d�j� dans les favoris, on le supprime de la liste
         nextState = {
           ...state,

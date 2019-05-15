@@ -11,86 +11,81 @@ class CardItem extends React.Component {
 		this.page = 0
 		this.nextPage = 0
 		this.state = {
-		  selectedIds: [],
-		  isLoading: false
-	  }
-		//this._toggleCheckbox = this._toggleCheckbox.bind(this)
-		this._toggleCard = this._toggleCard.bind(this)		
+			selectedIds: [],
+			isLoading: false
+		}
+		this._toggleCard = this._toggleCard.bind(this)
 	}
 
 	_toggleCard(card) {
-    const action = { type: "TOGGLE_CARD", value: card }
+		const action = { type: "TOGGLE_CARD", value: card }
 		this.props.dispatch(action)
-  }
+	}
 
-	// _toggleCheckbox(id) {
-	// 	const selectedIds = {...this.state.selectedIds}
-	// 	if (selectedIds[id]) {
-	// 		selectedIds[id] = false;
-	// 	}
-	// 	else {
-	// 		selectedIds[id] = true;
-	// 	}
-	// 	this.setState({ selectedIds: selectedIds });
-	// }
+	_isSelected(id) {
+		if (this.props.selectedCards.findIndex(item => item.id === id) != -1) {
+			return true;
+		}
+		return false;
+	}
 
-	_displayCheckbox(selectModeEnabled, id){
+	_displayCheckbox(selectModeEnabled, id) {
 		if (selectModeEnabled) {
 			return (
 				<View>
-				  	<CheckBox 
+					<CheckBox
 						style={styles.checkbox}
-						value = { this.state.selectedCards[id] }
-						onChange = {() => this._toggleCard(id)}
+						value={this.state.selectedCards[id]}
+						onChange={() => this._toggleCard(id)}
 					/>
 				</View>
-			 )
+			)
 		}
 	}
 
-  render() {
-	 const { card, displayDetailForCard, selectModeEnabled } = this.props
-    return (
-      <View>
-        <TouchableOpacity
-          style={styles.main_container}
-          onPress={() => displayDetailForCard(card.id)}>
-          <Image
-            style={styles.image}
-            source={{uri: card.imageUrl}}
-          />
-        </TouchableOpacity>
-				{ selectModeEnabled && 
-					<CheckBox 
-						style={ styles.checkbox }
-						value = { this.props.selectedCards[card.id] }
-						onChange = {() => this._toggleCard(card)}
+	render() {
+		const { card, displayDetailForCard, selectModeEnabled } = this.props
+		return (
+			<View>
+				<TouchableOpacity
+					style={styles.main_container}
+					onPress={() => displayDetailForCard(card.id)}>
+					<Image
+						style={styles.image}
+						source={{ uri: card.imageUrl }}
+					/>
+				</TouchableOpacity>
+				{selectModeEnabled &&
+					<CheckBox
+						style={styles.checkbox}
+						value={ this._isSelected(card.id) }
+						onChange={() => this._toggleCard(card)}
 					/>
 				}
-      </View>
-    )
+			</View>
+		)
 	}
 }
 
 const styles = StyleSheet.create({
-  main_container: {
-    height: 190,
-    flexDirection: 'row'
-  },
-  image: {
-    width: 120,
-    height: 180,
-    margin: 5
-  },
-  checkbox: {
-	  position: 'absolute'
+	main_container: {
+		height: 190,
+		flexDirection: 'row'
+	},
+	image: {
+		width: 120,
+		height: 180,
+		margin: 5
+	},
+	checkbox: {
+		position: 'absolute'
 	}
 })
 
 const mapStateToProps = (state) => {
-  return {
-    selectedCards: state.toggleCard.selectedCards
-  }
+	return {
+		selectedCards: state.toggleCard.selectedCards
+	}
 }
 
 export default connect(mapStateToProps)(CardItem)
