@@ -31,8 +31,7 @@ export function getCardDetails(id) {
 	return fetch(url)
 		.then((response) => 
 			{
-				var result = response.cards.json()
-				return result.cards[0]
+				return response.json()
 			})
 		.catch((error) => console.log(error))
 }

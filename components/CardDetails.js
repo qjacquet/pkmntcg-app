@@ -7,21 +7,6 @@ import { connect } from 'react-redux'
 
 class CardDetail extends React.Component {
 
-  static navigationOptions = ({ navigation }) => {
-      const { params } = navigation.state
-      if (params.card != undefined && Platform.OS === 'ios') {
-        return {
-            headerRight: <TouchableOpacity
-                            style={styles.share_touchable_headerrightbutton}
-                            onPress={() => params.shareCard()}>
-                            <Image
-                              style={styles.share_image}
-                              source={require('../Images/ic_share.png')} />
-                          </TouchableOpacity>
-        }
-      }
-  }
-
   constructor(props) {
     super(props)
     this.state = {
@@ -52,7 +37,7 @@ class CardDetail extends React.Component {
 	 this.setState({ isLoading: true })
     getCardDetails(this.props.navigation.state.params.id).then(data => {
       this.setState({
-        card: data,
+        card: data.cards[0],
         isLoading: false
       }, () => { this._updateNavigationParams() })
     })
@@ -75,10 +60,10 @@ class CardDetail extends React.Component {
 
 //   _displayFavoriteImage() {
 //     var sourceImage = require('../Images/ic_favorite_border.png')
-//     var shouldEnlarge = false // Par dÈfaut, si le card n'est pas en favoris, on veut qu'au clic sur le bouton, celui-ci s'agrandisse => shouldEnlarge ‡ true
+//     var shouldEnlarge = false // Par dÔøΩfaut, si le card n'est pas en favoris, on veut qu'au clic sur le bouton, celui-ci s'agrandisse => shouldEnlarge ÔøΩ true
 //     if (this.props.favoritesCard.findIndex(item => item.id === this.state.card.id) !== -1) {
 //       sourceImage = require('../Images/ic_favorite.png')
-//       shouldEnlarge = true // Si le card est dans les favoris, on veut qu'au clic sur le bouton, celui-ci se rÈtrÈcisse => shouldEnlarge ‡ false
+//       shouldEnlarge = true // Si le card est dans les favoris, on veut qu'au clic sur le bouton, celui-ci se rÔøΩtrÔøΩcisse => shouldEnlarge ÔøΩ false
 //     }
 //     return (
 //       <EnlargeShrink
@@ -95,30 +80,24 @@ class CardDetail extends React.Component {
     const { card } = this.state
     if (card != undefined) {
       return (
-        <ScrollView style={styles.scrollview_container}>
-          <Image
-            style={styles.image}
-            source={{uri: getImageFromApi(card.backdrop_path)}}
-          />
-          <Text style={styles.title_text}>{card.title}</Text>
+        <ScrollView 
+            style={styles.scrollview_container}>
+            <View style={styles.image_container}>
+                <Image
+                    style={styles.image}
+                    source={{uri: card.imageUrl}}
+                />
+            </View>
+          <Text style={styles.title_text}>{card.name}</Text>
           {/* <TouchableOpacity
               style={styles.favorite_container}
               onPress={() => this._toggleFavorite()}>
               {this._displayFavoriteImage()}
           </TouchableOpacity> */}
-          <Text style={styles.description_text}>{card.overview}</Text>
-          <Text style={styles.default_text}>Sorti le {moment(new Date(card.release_date)).format('DD/MM/YYYY')}</Text>
-          <Text style={styles.default_text}>Note : {card.vote_average} / 10</Text>
-          <Text style={styles.default_text}>Nombre de votes : {card.vote_count}</Text>
-          <Text style={styles.default_text}>Budget : {numeral(card.budget).format('0,0[.]00 $')}</Text>
-          <Text style={styles.default_text}>Genre(s) : {card.genres.map(function(genre){
-              return genre.name;
-            }).join(" / ")}
-          </Text>
-          <Text style={styles.default_text}>Companie(s) : {card.production_companies.map(function(company){
-              return company.name;
-            }).join(" / ")}
-          </Text>
+          <Text style={styles.default_text}>Extension : {card.set}</Text>
+          <Text style={styles.default_text}>Num√©ro : {card.number}</Text>
+          <Text style={styles.default_text}>Raret√© : {card.rarity}</Text>
+          <Text style={styles.default_text}>Artiste : {card.artist}</Text>
         </ScrollView>
       )
     }
@@ -149,7 +128,6 @@ class CardDetail extends React.Component {
       <View style={styles.main_container}>
         {this._displayLoading()}
         {this._displayCard()}
-        {this._displayFloatingActionButton()}
       </View>
     )
   }
@@ -157,7 +135,8 @@ class CardDetail extends React.Component {
 
 const styles = StyleSheet.create({
   main_container: {
-    flex: 1
+    flex: 1,
+    padding: 10,
   },
   loading_container: {
     position: 'absolute',
@@ -171,9 +150,15 @@ const styles = StyleSheet.create({
   scrollview_container: {
     flex: 1
   },
+  image_container :{
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   image: {
-    height: 169,
-    margin: 5
+    flex: 1,
+    width: 300,
+    height: 300,
+    resizeMode: 'contain'
   },
   title_text: {
     fontWeight: 'bold',

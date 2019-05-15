@@ -29,20 +29,6 @@ class CardItem extends React.Component {
 		return false;
 	}
 
-	_displayCheckbox(selectModeEnabled, id) {
-		if (selectModeEnabled) {
-			return (
-				<View>
-					<CheckBox
-						style={styles.checkbox}
-						value={this.state.selectedCards[id]}
-						onChange={() => this._toggleCard(id)}
-					/>
-				</View>
-			)
-		}
-	}
-
 	render() {
 		const { card, displayDetailForCard, selectModeEnabled } = this.props
 		return (
@@ -58,7 +44,7 @@ class CardItem extends React.Component {
 				{selectModeEnabled &&
 					<CheckBox
 						style={styles.checkbox}
-						value={ this._isSelected(card.id) }
+						value={this._isSelected(card.id)}
 						onChange={() => this._toggleCard(card)}
 					/>
 				}
