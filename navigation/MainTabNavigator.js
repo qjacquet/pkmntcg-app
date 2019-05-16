@@ -47,7 +47,13 @@ const CollectionStack = createStackNavigator({
     },
     CardDetails: {
         screen: CardDetails
-    }
+    },
+    CardSetsList: {
+        screen: CardDetails
+    },
+    CardList: {
+        screen: CardList
+    },
 })
 
 const DeckStack = createStackNavigator({

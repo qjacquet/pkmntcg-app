@@ -33,7 +33,6 @@ class CardDetail extends React.Component {
    //    }, () => { this._updateNavigationParams() })
    //    return
 	//  }
-	console.log(this.props.navigation.state.params.id)
 	 this.setState({ isLoading: true })
     getCardDetails(this.props.navigation.state.params.id).then(data => {
       this.setState({

@@ -2,37 +2,56 @@ import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import CardSetsListItem from './CardSetsListItem'
 import { connect } from 'react-redux'
-import { getCardSetsStandard } from '../../api/cards.api'
+import { getCardSetsStandard, getCardSets } from '../../api/cards.api'
 
 class CardSetsList extends React.Component {
 
 	constructor(props) {
 		super(props)
 		this.state = {
-			cardSets: []
-		}
+            cardSets: [],
+            cardSetsFilter: undefined
+        }
+        this._loadCardSets = this._loadCardSets.bind(this)
 	}
 
 	componentDidMount() {
-		getCardSetsStandard().then(data => {
+        if (this.props.navigation.state.params != undefined) {
+            this.setState({
+                cardSetsFilter: this.props.navigation.state.params.filter || "" // filtre contenant les paramï¿½tres pour l'url de l'api... ï¿½ amï¿½liorer
+            }, () => {
+                this._loadCardSets()
+            })
+        }
+        else {
+            this.setState({
+                cardSetsFilter: this.props.filter || "" // filtre contenant les paramï¿½tres pour l'url de l'api... ï¿½ amï¿½liorer
+            }, () => {
+                this._loadCardSets()
+            })
+        }
+    }
+    
+    _loadCardSets() {
+        if (this.state.cardSetsFilter == "") {
+            return null
+        }
+		getCardSets(this.state.cardSetsFilter).then(data => {
 			this.setState({
-				// Ajout des extensions bien ordonées par date
+				// Ajout des extensions bien ordonï¿½es par date
 				cardSets: data.sets
 					.sort(function(a, b) {
 						return b.date > a.date;
 				 	})
 			})
 		})
-	}
+    }
 
 	render() {
-		if (this.state.cardSets.length == 0){
-			return null
-		}
 		return (
 			<FlatList
 				style={styles.list}
-				data={this.state.cardSets}
+				data={this.props.cardSets || this.state.cardSets}
 				keyExtractor={(item) => item.code.toString()}
 				renderItem={({ item }) => (
 					<CardSetsListItem

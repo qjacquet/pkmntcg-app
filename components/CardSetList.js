@@ -16,7 +16,6 @@ class CardSetList extends React.Component {
   _toggleCardSet(cardSetCode) {
     const action = { type: "TOGGLE_CARDSET", value: cardSetCode }
     this.props.dispatch(action)
-    console.log(this.state)
   }
 
   componentDidMount() {

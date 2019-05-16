@@ -36,8 +36,8 @@ export function getCardDetails(id) {
 		.catch((error) => console.log(error))
 }
 
-export function getCardSets() {
-    const url = 'https://api.pokemontcg.io/v1/sets';
+export function getCardSets(filter) {
+    const url = 'https://api.pokemontcg.io/v1/sets?pageSize=1000' + filter;
     return fetch(url)
 		.then((response) => 
 			{
