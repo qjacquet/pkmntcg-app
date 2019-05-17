@@ -94,7 +94,7 @@ class CardList extends React.Component {
     }
 
     render() {
-
+        console.log(this.state.selectModeEnabled)
         return (
             <FlatList
                 style={styles.list}

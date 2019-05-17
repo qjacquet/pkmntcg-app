@@ -63,6 +63,7 @@ class CardItem extends React.Component {
                         source={{ uri: card.imageUrl }}
                     />
                 </TouchableOpacity>
+                {selectModeEnabled &&
                 <View style={styles.action_count}>
                     <TouchableOpacity
                         onPress={() => this._removeCard(card)}>
@@ -84,6 +85,7 @@ class CardItem extends React.Component {
                         />
                     </TouchableOpacity>
                 </View>
+                }
 
                 {/* {selectModeEnabled &&
 					<CheckBox

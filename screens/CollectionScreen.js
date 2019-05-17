@@ -40,7 +40,8 @@ class CollectionScreen extends React.Component {
                 <CardSetsList
                     cardSets={this.state.cardSets}
                     navigation={this.props.navigation}
-                    selectModeEnabled={false}
+                    selectModeEnabled={true}
+                    collectionModeEnabled={true}
                 />
             </View>
         )

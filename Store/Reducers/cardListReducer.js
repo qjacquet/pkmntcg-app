@@ -45,8 +45,8 @@ function toggleCard(state = initialState, action) {
             return nextState || state
 
         case 'REMOVE_CARD':
-            if (cardIndex !== -1) {
-                if (nextState.selectedCards[cardIndex].quantity == 1)
+            if (cardIndex !== -1 && state.selectedCards[cardIndex].quantity > 0) {
+                if (state.selectedCards[cardIndex].quantity == 1)
                 {
                     nextState = {
                         ...state,
@@ -55,6 +55,11 @@ function toggleCard(state = initialState, action) {
                 }
                 else 
                 {
+                    nextState = {
+                        ...state,
+                        selectedCards: [...state.selectedCards]
+                    }
+    
                     nextState.selectedCards[cardIndex].quantity--
                 }
 

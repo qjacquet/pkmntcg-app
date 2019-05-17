@@ -55,11 +55,12 @@ class CardSetsList extends React.Component {
 				keyExtractor={(item) => item.code.toString()}
 				renderItem={({ item }) => (
 					<CardSetsListItem
+                        selectModeEnabled={this.props.selectModeEnabled}
 						cardSet={item}
 						navigation={this.props.navigation}
 					/>
 				)}
-				numColumns={2}
+				
 			/>
 		)
 	}
@@ -68,7 +69,7 @@ class CardSetsList extends React.Component {
 const styles = StyleSheet.create({
 	list: {
 		flex: 1
-	}
+    },
 })
 
 const mapStateToProps = state => {
