@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions, CheckBox } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions, CheckBox, PureComponent  } from 'react-native'
 import moment from 'moment'
 import FadeIn from '../Animation/FadeIn'
 import { connect } from 'react-redux'
@@ -63,6 +63,7 @@ class CardItem extends React.Component {
                         source={{ uri: card.imageUrl }}
                     />
                 </TouchableOpacity>
+
                 {selectModeEnabled &&
                 <View style={styles.action_count}>
                     <TouchableOpacity

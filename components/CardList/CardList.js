@@ -94,7 +94,6 @@ class CardList extends React.Component {
     }
 
     render() {
-        console.log(this.state.selectModeEnabled)
         return (
             <FlatList
                 style={styles.list}
@@ -112,7 +111,8 @@ class CardList extends React.Component {
                 onEndReachedThreshold={0.5}
                 onEndReached={() => {
                     //this._loadCards()
-                }}
+					 }}
+					 removeClippedSubviews={true}
             />
         )
     }

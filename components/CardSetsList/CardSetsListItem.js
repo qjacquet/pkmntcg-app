@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions } from 'react-native'
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import { connect } from 'react-redux'
 import moment from 'moment'
 import { getCardsFromCardSet } from '../../api/cards.api'
 
@@ -15,6 +16,7 @@ class CardSetsListItem extends React.Component {
 		}
 		this._loadCardsFromCardSet = this._loadCardsFromCardSet.bind(this)
 		this._displayCardList = this._displayCardList.bind(this)
+		this._getCountOfUniqueCardsBySet = this._getCountOfUniqueCardsBySet.bind(this)
 	 }
 
 	_loadCardsFromCardSet(codeSet) {
@@ -35,7 +37,16 @@ class CardSetsListItem extends React.Component {
             screenTitle: cardSet.name,
             selectModeEnabled: this.props.selectModeEnabled
 		})
-    }
+	 }
+	 
+	 _getCountOfUniqueCardsBySet(setcode) {
+		var count = 0
+		for(var i = 0; i < this.props.selectedCards.length; ++i) {
+			 if(this.props.selectedCards[i].setCode == setcode)
+				count++
+		}
+		return count
+	} 
     
     _oldRender() {
         return (
@@ -65,7 +76,7 @@ class CardSetsListItem extends React.Component {
         title={cardSet.name}
         subtitle={
           <View style={styles.subtitleView}>
-            <Text style={styles.ratingText}>0 / {cardSet.totalCards}</Text>
+            <Text style={styles.ratingText}>{this._getCountOfUniqueCardsBySet(cardSet.code)} / {cardSet.totalCards}</Text>
           </View>
         }
         leftAvatar={{
@@ -138,4 +149,10 @@ const styles = StyleSheet.create({
       }
 })
 
-export default CardSetsListItem
+const mapStateToProps = (state) => {
+	return {
+		 selectedCards: state.toggleCard.selectedCards
+	}
+}
+
+export default connect(mapStateToProps)(CardSetsListItem)
