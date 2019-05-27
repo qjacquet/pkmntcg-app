@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions, CheckBox, PureComponent  } from 'react-native'
+import { Overlay } from 'react-native-elements'
 import moment from 'moment'
 import FadeIn from '../Animation/FadeIn'
 import { connect } from 'react-redux'
@@ -13,14 +14,14 @@ class CardItem extends React.Component {
         this.nextPage = 0
         this.state = {
             selectedIds: [],
-            isLoading: false
+				isLoading: false
         }
         this._toggleCard = this._toggleCard.bind(this)
         this._addCard = this._addCard.bind(this)
         this._removeCard = this._removeCard.bind(this)
-        this._getCardCount = this._getCardCount.bind(this)
-    }
-
+		  this._getCardCount = this._getCardCount.bind(this)
+	 }
+	 
     _addCard(card) {
         const action = { type: "ADD_CARD", value: card }
         this.props.dispatch(action)
@@ -49,44 +50,20 @@ class CardItem extends React.Component {
             return 0
         }
         return this.props.selectedCards[cardIndex].quantity;
-    }
-
-    render() {
-        const { card, displayDetailForCard, selectModeEnabled } = this.props
+	 }
+	 	 
+   render() {
+        const { card, displayDetailForCard,  setModaleVisible, selectModeEnabled } = this.props
         return (
             <View>
                 <TouchableOpacity
                     style={styles.main_container}
-                    onPress={() => displayDetailForCard(card.id)}>
+                    onPress={() => setModaleVisible(card)}>
                     <Image
                         style={this._isSelected(card.id) ? styles.image : styles.image_disabled}
                         source={{ uri: card.imageUrl }}
                     />
                 </TouchableOpacity>
-
-                {selectModeEnabled &&
-                <View style={styles.action_count}>
-                    <TouchableOpacity
-                        onPress={() => this._removeCard(card)}>
-                        <Icon.Ionicons
-                            name="md-remove-circle"
-                            size={30}
-                            color="red"
-                        />
-                    </TouchableOpacity>
-
-                    <Text>{this._getCardCount(card.id)}</Text>
-
-                    <TouchableOpacity
-                        onPress={() => this._addCard(card)}>
-                        <Icon.Ionicons
-                            name="md-add-circle"
-                            size={30}
-                            color="green"
-                        />
-                    </TouchableOpacity>
-                </View>
-                }
 
                 {/* {selectModeEnabled &&
 					<CheckBox

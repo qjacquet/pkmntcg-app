@@ -1,8 +1,10 @@
 import React from 'react'
 import { StyleSheet, FlatList, View, ActivityIndicator, Text, Dimensions } from 'react-native'
+import { Overlay } from 'react-native-elements'
 import CardItem from '../CardItem'
 import { connect } from 'react-redux'
 import { getAllCards } from '../../api/cards.api'
+import CardModal from '../CardModal' 
 
 class CardList extends React.Component {
 
@@ -21,9 +23,15 @@ class CardList extends React.Component {
             cards: [],
             cardFilter: undefined,
             selectModeEnabled: false,
-            isLoading: false
+				isLoading: false,
+				modal: {
+					isVisible: false,
+					card: undefined
+				}
         }
-        this._loadCards = this._loadCards.bind(this)
+		  this._loadCards = this._loadCards.bind(this)
+		  this._setModaleVisible = this._setModaleVisible.bind(this)
+
         this.screenWidth = Dimensions.width;
     }
 
@@ -81,7 +89,7 @@ class CardList extends React.Component {
 
     _displayDetailForCard = (id) => {
         this.props.navigation.navigate('CardDetails', { id: id })
-    }
+	 }
 
     _displayLoading() {
         if (this.state.isLoading) {
@@ -91,36 +99,50 @@ class CardList extends React.Component {
                 </View>
             )
         }
-    }
+	 }
+	 
+	 _setModaleVisible = (card) => {
+		this.setState({
+			modal: {
+				isVisible: true,
+				card: card
+			}
+		}, () => {
+			//console.log(this.state.modal)
+		})
+	}
 
-    render() {
-        return (
-            <FlatList
-                style={styles.list}
-                data={this.props.cards || this.state.cards}
-                extraData={this.props.selectedCards}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <CardItem
-                        selectModeEnabled={this.state.selectModeEnabled}
-                        card={item}
-                        displayDetailForCard={this._displayDetailForCard}
-                    />
-                )}
-                numColumns={3}
-                onEndReachedThreshold={0.5}
-                onEndReached={() => {
-                    //this._loadCards()
-					 }}
-					 removeClippedSubviews={true}
-            />
-        )
-    }
+	render() {
+		return (
+			<View>
+				<CardModal visibility={this.state.modal.isVisible} card={this.state.modal.card}/>
+				<FlatList
+					style={styles.list}
+					data={this.props.cards || this.state.cards}
+					extraData={this.props.selectedCards}
+					keyExtractor={(item) => item.id}
+					renderItem={({ item }) => (
+						<CardItem
+							selectModeEnabled={this.state.selectModeEnabled}
+							card={item}
+							displayDetailForCard={this._displayDetailForCard}
+							setModaleVisible={this._setModaleVisible}
+						/>
+					)}
+					numColumns={3}
+					onEndReachedThreshold={0.5}
+					onEndReached={() => {
+						//this._loadCards()
+					}}
+					removeClippedSubviews={true}
+				/>
+			</View>
+		)
+	}
 }
 
 const styles = StyleSheet.create({
     list: {
-        flex: 1,
         width: this.screenWidth
     },
     loading_container: {
