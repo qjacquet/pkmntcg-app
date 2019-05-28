@@ -16,62 +16,27 @@ class CardItem extends React.Component {
             selectedIds: [],
 				isLoading: false
         }
-        this._toggleCard = this._toggleCard.bind(this)
-        this._addCard = this._addCard.bind(this)
-        this._removeCard = this._removeCard.bind(this)
-		  this._getCardCount = this._getCardCount.bind(this)
 	 }
 	 
-    _addCard(card) {
-        const action = { type: "ADD_CARD", value: card }
-        this.props.dispatch(action)
-    }
-
-    _removeCard(card) {
-        const action = { type: "REMOVE_CARD", value: card }
-        this.props.dispatch(action)
-    }
-
-    _toggleCard(card) {
-        const action = { type: "TOGGLE_CARD", value: card }
-        this.props.dispatch(action)
-    }
-
     _isSelected(id) {
         if (this.props.selectedCards.findIndex(item => item.id === id) != -1) {
             return true;
         }
         return false;
     }
-
-    _getCardCount(id) {
-        const cardIndex = this.props.selectedCards.findIndex(item => item.id === id)
-        if (cardIndex === -1) {
-            return 0
-        }
-        return this.props.selectedCards[cardIndex].quantity;
-	 }
 	 	 
    render() {
-        const { card, displayDetailForCard,  setModaleVisible, selectModeEnabled } = this.props
+        const { card, toggleCardModal } = this.props
         return (
             <View>
                 <TouchableOpacity
                     style={styles.main_container}
-                    onPress={() => setModaleVisible(card)}>
+                    onPress={() => toggleCardModal(card)}>
                     <Image
                         style={this._isSelected(card.id) ? styles.image : styles.image_disabled}
                         source={{ uri: card.imageUrl }}
                     />
                 </TouchableOpacity>
-
-                {/* {selectModeEnabled &&
-					<CheckBox
-						style={styles.checkbox}
-						value={this._isSelected(card.id)}
-						onChange={() => this._toggleCard(card)}
-					/>
-				} */}
             </View>
         )
     }

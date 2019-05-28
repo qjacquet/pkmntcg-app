@@ -9,6 +9,7 @@ import TabBarIcon from '../components/TabBarIcon'
 import CardSearch from '../components/CardSearch'
 import CardDetails from '../components/CardDetails'
 import CardSetsList from '../components/CardSetsList/CardSetsList'
+import CardModal from '../components/CardModal'
 import CardList from '../components/CardList/CardList'
 
 const HomeStack = createStackNavigator({
@@ -53,7 +54,10 @@ const CollectionStack = createStackNavigator({
     },
     CardList: {
         screen: CardList
-    },
+	 },
+	 CardModal: {
+		screen: CardModal
+  	 }
 })
 
 const DeckStack = createStackNavigator({

@@ -3,6 +3,8 @@ import { StyleSheet, FlatList, SectionList, Text, View } from 'react-native'
 import CardSetsListItem from './CardSetsListItem'
 import { connect } from 'react-redux'
 import { getCardSetsStandard, getCardSets } from '../../api/cards.api'
+import numeral from 'numeral'
+import { Icon } from 'react-native-elements'
 
 class CardSetsList extends React.Component {
 
@@ -70,8 +72,15 @@ class CardSetsList extends React.Component {
 	 }
 
 	_getCountOfUniqueCardsBySeries(series) {
-		// voir si possible a compter depuis l'item "section"
-		return 0
+		var count = 0
+		for(var i = 0; i < this.props.selectedCards.length; ++i) {
+			for(var j = 0; j < this.props.cardSets.length; ++j) {
+				if (this.props.cardSets[j].series == series && this.props.selectedCards[i].setCode == this.props.cardSets[j].code) {
+					count++
+				}
+			}
+		}
+		return count
 	} 
 
 	 _getCountOfCardsBySeries(series) {
@@ -83,31 +92,30 @@ class CardSetsList extends React.Component {
 		return count
 	} 
 
+	_getCompletionPercentage(count, total) {
+		return numeral(count / total).format('0%');
+	} 
+
 	/**
 	 * Render
 	 */
 	 
-	_renderSection = ({ section }) => (
-		<View style={ styles.section }>
-		  <Text style={{ color: 'white' }}>{section.key.toUpperCase()} {this._getCountOfUniqueCardsBySeries(section.key)} / {this._getCountOfCardsBySeries(section.key)}</Text>
-		</View>
-	)
+	_renderSection = ({ section }) => {
+		let count = this._getCountOfUniqueCardsBySeries(section.key)
+		let total = this._getCountOfCardsBySeries(section.key)
+		let percentage = this._getCompletionPercentage(count, total)
+		return (
+			<View style={ styles.section }>
+			<Text style={ styles.sectionTitle }>{section.key.toUpperCase()}</Text>
+			<Text style={ styles.sectionCount }>
+				{count} / {total} ({percentage})
+			</Text>
+			</View>
+		)
+		}
 
 	render() {
 		return (
-			// <FlatList
-			// 	style={styles.list}
-			// 	data={this.props.cardSets || this.state.cardSets}
-			// 	keyExtractor={(item) => item.code.toString()}
-			// 	renderItem={({ item }) => (
-			// 		<CardSetsListItem
-         //                selectModeEnabled={this.props.selectModeEnabled}
-			// 			cardSet={item}
-			// 			navigation={this.props.navigation}
-			// 		/>
-			// 	)}
-				
-			// />
 			<SectionList
 				sections={this._getDataFormated(this.props.cardSets) || this._getDataFormated(this.state.cardSets)}
 				renderSectionHeader={this._renderSection}
@@ -131,8 +139,17 @@ const styles = StyleSheet.create({
 	 },
 	section: {
 		padding: 8, 
-		backgroundColor: '#4fc3c8'
-	} 
+		backgroundColor: '#4fc3c8',
+		flexDirection: 'row'
+	},
+	sectionTitle: {
+		color: 'white'
+	},
+	sectionCount: {
+		color: 'white',
+		textAlign: 'right',
+		marginLeft: 'auto'
+	}
 })
 
 const mapStateToProps = (state) => {

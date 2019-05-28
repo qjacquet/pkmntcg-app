@@ -3,7 +3,9 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions }
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import numeral from 'numeral'
 import { getCardsFromCardSet } from '../../api/cards.api'
+
 
 class CardSetsListItem extends React.Component {
 
@@ -47,6 +49,14 @@ class CardSetsListItem extends React.Component {
 		}
 		return count
 	} 
+
+	_getCompletionPercentage(count, total) {
+		return numeral(count / total).format('0%');
+	} 
+
+	_isComplete(count, total) {
+		return count == total
+	}
     
     _oldRender() {
         return (
@@ -70,13 +80,20 @@ class CardSetsListItem extends React.Component {
 
   render() {
 	 const { cardSet } = this.props
+	 let count = this._getCountOfUniqueCardsBySet(cardSet.code)
+	 let total = cardSet.totalCards
+	 let percentage = this._getCompletionPercentage(count, total)
     return (
     <TouchableOpacity onPress={() => { this._displayCardList(cardSet) }}>
         <ListItem
         title={cardSet.name}
         subtitle={
           <View style={styles.subtitleView}>
-            <Text style={styles.ratingText}>{this._getCountOfUniqueCardsBySet(cardSet.code)} / {cardSet.totalCards}</Text>
+				<Text>{count} / {total} ({percentage})</Text>
+				{
+					this._isComplete(count, total) && 
+					<Icon style={styles.sectionCountIcon} color="#fdd835" name="star"/>
+				}
           </View>
         }
         leftAvatar={{
@@ -85,24 +102,6 @@ class CardSetsListItem extends React.Component {
         }}
       />
     </TouchableOpacity>
-
-  
-    //   <View>
-    //   <TouchableOpacity
-    //     style={styles.main_container}
-    //     onPress={() => { this._displayCardList(cardSet) }}>
-    //     <Image
-    //       style={styles.image}
-    //       source={{uri: cardSet.logoUrl}}
-    //     />
-    //   </TouchableOpacity>
-    //   <View style={styles.item_info_text}>
-
-    //       <Text>Hello ! </Text>
-
-    //   </View>
-    // </View>
-
     )
   }
 }
@@ -133,19 +132,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         width:"100%"
     },
-
     subtitleView: {
-        flexDirection: 'row',
-        paddingLeft: 10,
-        paddingTop: 5
-      },
-      ratingImage: {
-        height: 19.21,
-        width: 100
-      },
-      ratingText: {
-        paddingLeft: 10,
-        color: 'grey'
+		  flexDirection: 'row',
+		  justifyContent: 'space-between'
       }
 })
 

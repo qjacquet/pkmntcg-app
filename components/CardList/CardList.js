@@ -30,7 +30,8 @@ class CardList extends React.Component {
 				}
         }
 		  this._loadCards = this._loadCards.bind(this)
-		  this._setModaleVisible = this._setModaleVisible.bind(this)
+		  //this._setModalVisible = this._setModalVisible.bind(this)
+		  this._toggleCardModal = this._toggleCardModal.bind(this)
 
         this.screenWidth = Dimensions.width;
     }
@@ -101,21 +102,27 @@ class CardList extends React.Component {
         }
 	 }
 	 
-	 _setModaleVisible = (card) => {
-		this.setState({
-			modal: {
-				isVisible: true,
-				card: card
-			}
-		}, () => {
-			//console.log(this.state.modal)
-		})
+	_displayModal(){
+		return (
+			<CardModal 
+				ref={ref => {
+					this.cardModal = ref;
+				}} 
+				selectModeEnabled = {this.state.selectModeEnabled}
+			 />
+		)
+	}
+
+	_toggleCardModal = (card) => {
+		if(this.cardModal){
+		  this.cardModal.toggle(card);
+		}
 	}
 
 	render() {
 		return (
 			<View>
-				<CardModal visibility={this.state.modal.isVisible} card={this.state.modal.card}/>
+				{this._displayModal()}
 				<FlatList
 					style={styles.list}
 					data={this.props.cards || this.state.cards}
@@ -126,7 +133,7 @@ class CardList extends React.Component {
 							selectModeEnabled={this.state.selectModeEnabled}
 							card={item}
 							displayDetailForCard={this._displayDetailForCard}
-							setModaleVisible={this._setModaleVisible}
+							toggleCardModal={this._toggleCardModal}
 						/>
 					)}
 					numColumns={3}
@@ -158,7 +165,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        selectedCards: state.toggleCard.selectedCards
+		  selectedCards: state.toggleCard.selectedCards,
+		  cardModal: state.modal
     }
 }
 
