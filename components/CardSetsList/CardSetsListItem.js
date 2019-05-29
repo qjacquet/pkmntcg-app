@@ -43,8 +43,8 @@ class CardSetsListItem extends React.Component {
 	 
 	 _getCountOfUniqueCardsBySet(setcode) {
 		var count = 0
-		for(var i = 0; i < this.props.selectedCards.length; ++i) {
-			 if(this.props.selectedCards[i].setCode == setcode)
+		for(var i = 0; i < this.props.collection.length; ++i) {
+			 if(this.props.collection[i].setCode == setcode)
 				count++
 		}
 		return count
@@ -140,7 +140,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
 	return {
-		 selectedCards: state.toggleCard.selectedCards
+		selectedCards: state.toggleCard.selectedCards,
+		collection: state.collection.cards
 	}
 }
 

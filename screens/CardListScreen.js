@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        selectedCards: state.toggleCard.selectedCards
+		selectedCards: state.toggleCard.selectedCards,
+		collection: state.collection.cards
     }
 }
 

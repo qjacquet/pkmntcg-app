@@ -35,6 +35,7 @@ class CollectionScreen extends React.Component {
     }
 
     render() {
+		 //console.log(this.props.collection)
         return (
             <View style={styles.main_container}>
                 <CardSetsList
@@ -56,7 +57,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        selectedCards: state.toggleCard.selectedCards
+		selectedCards: state.toggleCard.selectedCards,
+		collection: state.collection.cards
     }
 }
 

@@ -126,7 +126,7 @@ class CardList extends React.Component {
 				<FlatList
 					style={styles.list}
 					data={this.props.cards || this.state.cards}
-					extraData={this.props.selectedCards}
+					extraData={this.props.collection}
 					keyExtractor={(item) => item.id}
 					renderItem={({ item }) => (
 						<CardItem
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
 		  selectedCards: state.toggleCard.selectedCards,
-		  cardModal: state.modal
+		  collection: state.collection.cards
     }
 }
 

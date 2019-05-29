@@ -24,7 +24,8 @@ export default class App extends React.Component {
         />
       );
     } else {
-      let persistor = persistStore(Store)
+		let persistor = persistStore(Store)
+		persistor.purge()
       return (
         <Provider store={Store}>
           <PersistGate persistor={persistor}>

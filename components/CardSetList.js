@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    selectedSets: state.cardSearchFilter.selectedSets
+	selectedCards: state.toggleCard.selectedCards,
+	collection: state.collection.cards
   }
 }
 

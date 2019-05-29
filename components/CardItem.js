@@ -19,7 +19,7 @@ class CardItem extends React.Component {
 	 }
 	 
     _isSelected(id) {
-        if (this.props.selectedCards.findIndex(item => item.id === id) != -1) {
+        if (this.props.collection.findIndex(item => item.id === id) != -1) {
             return true;
         }
         return false;
@@ -74,7 +74,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        selectedCards: state.toggleCard.selectedCards
+		selectedCards: state.toggleCard.selectedCards,
+		collection: state.collection.cards
     }
 }
 
