@@ -18,12 +18,13 @@ class CardItem extends React.Component {
         }
 	 }
 	 
-    _isSelected(id) {
-        if (this.props.collection.findIndex(item => item.id === id) != -1) {
-            return true;
-        }
-        return false;
-    }
+	_isSelected(id) {
+		let searchedIndex = this.props.collection.findIndex(item => item.id === id && item.quantity > 0)
+		if (searchedIndex != -1) {
+			return true;
+		}
+		return false;
+	}
 	 	 
    render() {
         const { card, toggleCardModal } = this.props

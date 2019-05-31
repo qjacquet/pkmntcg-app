@@ -11,8 +11,8 @@ class CardModal extends React.Component {
 		this.state = {
 			visible: false,
 			card: undefined,
-			selectedCardType: "",
-			selectedCardState: "",
+			selectedCardRarity: "normal",
+			selectedCardCondition: "",
 			selectedCardQuantity: 0
 		}
 
@@ -25,56 +25,57 @@ class CardModal extends React.Component {
 			this.setState({
 				visible: !this.state.visible,
 				card: card
+			}, () => {
+				 //console.log("Open")
+				 //console.log(this.props.collection)
 			});
 		}
 		else {
 			this._save(this.state.card)
 			this.setState({
 				visible: !this.state.visible,
-				card: undefined
+				card: undefined,
+				selectedCardRarity: "normal",
+				selectedCardCondition: "",
+				selectedCardQuantity: 0
 			});
 		}
 	}
 
+	// Sauvegarde différentielle
 	_save(card) {
-		let action = undefined
 
-		let collection = {
-			rarity: this.state.selectedCardType,
-			state: this.state.selectedCardState,
-			quantity: this.state.selectedCardQuantity
-		}
-
-		// // Si on ajoute ou modifie
-		// if (this.state.selectedCardQuantity > 0)
-		// {
-
-		// }
-		// // Si on supprime
-		// else {
-			
-		// }
-
-		// Si l'élément n'est pas défini, on l'initialise
-		if (card.collection == undefined){
-			card.collection = [collection]
-		}
-		else {
-			let searchedRarityIndex = card.collection.findIndex(item => item.rarity === collection.rarity)
-			// Si l'élément est déjà présent, on l'actualise
-			if (searchedRarityIndex !== -1) {
-				card.collection[searchedRarityIndex] = collection
-				
-			}
-			// Sinon on l'ajoute
-			else {
-				card.collection.push(collection)
-			}
-		}
-
-		action = { type: "UPSERT", value: card }
-
+		card.rarity = this.state.selectedCardRarity
+		card.condition = this.state.selectedCardCondition
+		card.quantity = this.state.selectedCardQuantity
+		
+		// console.log("Close")
+		// console.log(card)
+		let action = { type: "UPSERT", value: card }
 		this.props.dispatch(action)
+
+
+		// let collection = {
+		// 	rarity: this.state.selectedCardRarity,
+		// 	state: this.state.selectedCardCondition,
+		// 	quantity: this.state.selectedCardQuantity
+		// }
+
+
+
+		// let searchedRarityIndex = card.findIndex(item => item.rarity === this.state.selectedCardRarity)
+		// // Si l'élément est déjà présent, on l'actualise
+		// if (searchedRarityIndex !== -1) {
+		// 	card.collection[searchedRarityIndex] = collection
+		// }
+		// // Sinon on l'ajoute
+		// else {
+		// 	card.collection.push(collection)
+		// }
+
+		// action = { type: "UPSERT", value: card }
+
+
 	}
 
 	_isSelected(id) {
@@ -130,19 +131,19 @@ class CardModal extends React.Component {
 							/>
 							{/* Rarity */}
 							<Picker
-								selectedValue={this.state.selectedCardType}
+								selectedValue={this.state.selectedCardRarity}
 								onValueChange={(itemValue, itemIndex) =>
-									this.setState({selectedCardType: itemValue})
+									this.setState({selectedCardRarity: itemValue})
 								}>
-								<Picker.Item label="Rarete" value="" />
+								<Picker.Item label="Rarete" value="normal" />
 								<Picker.Item label="Normal" value="normal" />
 								<Picker.Item label="Foil" value="foil" />
 							</Picker>
 							{/* State */}
 							<Picker
-								selectedValue={this.state.selectedCardState}
+								selectedValue={this.state.selectedCardCondition}
 								onValueChange={(itemValue, itemIndex) =>
-									this.setState({selectedCardState: itemValue})
+									this.setState({selectedCardCondition: itemValue})
 								}>
 								<Picker.Item label="Etat" value="" />
 								<Picker.Item label="Excellent" value="1" />
