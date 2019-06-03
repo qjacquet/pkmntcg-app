@@ -18,8 +18,8 @@ class CardItem extends React.Component {
         }
 	 }
 	 
-	_isSelected(id) {
-		let searchedIndex = this.props.collection.findIndex(item => item.id === id && item.quantity > 0)
+	_isCollected(id) {
+		let searchedIndex = this.props.collection.findIndex(item => item.id === id && item.collectionData.quantity > 0)
 		if (searchedIndex != -1) {
 			return true;
 		}
@@ -27,14 +27,15 @@ class CardItem extends React.Component {
 	}
 	 	 
    render() {
-        const { card, toggleCardModal } = this.props
+		  const { card, toggleCardModal } = this.props
+		  let isCollected = this._isCollected(card.id)
         return (
             <View>
                 <TouchableOpacity
                     style={styles.main_container}
                     onPress={() => toggleCardModal(card)}>
                     <Image
-                        style={this._isSelected(card.id) ? styles.image : styles.image_disabled}
+                        style={isCollected ? styles.image : styles.image_disabled}
                         source={{ uri: card.imageUrl }}
                     />
                 </TouchableOpacity>

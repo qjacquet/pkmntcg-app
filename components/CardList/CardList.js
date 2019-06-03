@@ -30,7 +30,7 @@ class CardList extends React.Component {
 				}
         }
 		  this._loadCards = this._loadCards.bind(this)
-		  //this._setModalVisible = this._setModalVisible.bind(this)
+		  this._displayModal = this._displayModal.bind(this)
 		  this._toggleCardModal = this._toggleCardModal.bind(this)
 
         this.screenWidth = Dimensions.width;

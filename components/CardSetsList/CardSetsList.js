@@ -112,7 +112,7 @@ class CardSetsList extends React.Component {
 			</Text>
 			</View>
 		)
-		}
+	}
 
 	render() {
 		return (
