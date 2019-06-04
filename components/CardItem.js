@@ -19,7 +19,7 @@ class CardItem extends React.Component {
 	 }
 	 
 	_isCollected(id) {
-		let searchedIndex = this.props.collection.findIndex(item => item.id === id && item.collectionData.quantity > 0)
+		let searchedIndex = this.props.collection.findIndex(item => item.id === id)
 		if (searchedIndex != -1) {
 			return true;
 		}

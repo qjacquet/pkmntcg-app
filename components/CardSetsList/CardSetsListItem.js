@@ -42,9 +42,17 @@ class CardSetsListItem extends React.Component {
 	 }
 	 
 	 _getCountOfUniqueCardsBySet(setcode) {
+		const uniqueCardsCollection = this.props.collection.reduce((acc, current) => {
+			const x = acc.find(item => item.id === current.id);
+			if (!x) {
+			  return acc.concat([current]);
+			} else {
+			  return acc;
+			}
+		}, []);
 		var count = 0
-		for(var i = 0; i < this.props.collection.length; ++i) {
-			 if(this.props.collection[i].setCode == setcode)
+		for(var i = 0; i < uniqueCardsCollection.length; ++i) {
+			 if(uniqueCardsCollection[i].setCode == setcode)
 				count++
 		}
 		return count

@@ -12,22 +12,23 @@ class CardModal extends React.Component {
 			visible: false,
 			card: undefined,
 			selectedCardType: "normal",
-			selectedCardCondition: "",
+			selectedCardCondition: "Bon",
 			selectedCardQuantity: 0
 		}
 
 		this.toggle = this.toggle.bind(this)
 		this._save = this._save.bind(this)
+		//this._displayAllCollectedCardWithTypes = this._displayAllCollectedCardWithTypes.bind(this)
 	}
 
 	_getDataFormated(data) {
 		return data.reduce((acc, item) => {
-			const foundIndex = acc.findIndex(element => element.key === item.collectionData.type);
+			const foundIndex = acc.findIndex(element => element.key === item.type);
 			if (foundIndex === -1) {
 			  return [
 				 ...acc, 
 				 {
-					key: item.collectionData.type,
+					key: item.type,
 					data: [item],
 				 },
 			  ];
@@ -42,9 +43,9 @@ class CardModal extends React.Component {
 			this.setState({
 				visible: !this.state.visible,
 				card: card,
-				selectedCardType: card.collectionData ? card.collectionData.type : "normal",
-				selectedCardCondition: card.collectionData ? card.collectionData.condition : "",
-				selectedCardQuantity: card.collectionData ? card.collectionData.quantity : 0
+				selectedCardType: "normal",
+				selectedCardCondition: "Bon",
+				selectedCardQuantity: 0
 			}, () => {
 
 			});
@@ -60,53 +61,52 @@ class CardModal extends React.Component {
 	_save(card, actionType) {
 		if (this.state.selectedCardQuantity > 0)
 		{
-			let collectionData = {
+			var collectionData = {
 				type: this.state.selectedCardType,
-				condition: this.state.selectedCardCondition
+				condition: this.state.selectedCardCondition,
+				quantity: this.state.selectedCardQuantity
 			}
-
-			card.collectionData = collectionData
+				
+			let action = { type: actionType, card: card, collectionData: collectionData}
+			this.props.dispatch(action)
 		}
-
-		let action = { type: actionType, value: card, quantity: this.state.selectedCardQuantity}
-		this.props.dispatch(action)
 	}
 
 	_isCollected(id) {
-		if (this._getAllCardsCollectedCount(id) > 0)
-		{
+		if (this.props.collection.findIndex(item => item.id == id) !== -1) {
 			return true
 		}
 		return false
 	}
 
 	_getAllCardsCollectedCount(id) {
-		return this._getAllCardsCollected(id).length
+		return this._getCollectionData(id).length
 	}
 
-	_getAllCardsCollected(id) {
-		return this.props.collection.filter((item, index) => item.id == id)
-	}
-
-	// a ameliorer
-	_getUniqueCardCollectedCount(list, filter) {
-		return list.filter(item => item.type == filter.type && item.condition == filter.condition).length
+	_getCollectionData(id) {
+		const cardIndex = this.props.collection.findIndex(item => item.id == id)
+		if (cardIndex !== -1)
+		{
+			return this.props.collection[cardIndex].collectionData
+		}
+		return null
 	}
 
 	_displayAllCollectedCardWithTypes(id) {
-		const list = this._getAllCardsCollected(id)
-		//console.log(list)
+		const list = this._getCollectionData(id)
+		if (list == null) {
+			return <View></View>
+		}
 		return (
 			<SectionList
 				sections={this._getDataFormated(list)}
 				renderSectionHeader={this._renderSection}
 				renderItem={({ item }) => (
 					<View>
-						<Text>{item.collectionData.condition}</Text>
-						<Text>{this._getUniqueCardCollectedCount(list, {type: item.collectionData.type, condition: item.collectionData.collection})}</Text>
+						<Text>Condition : {item.condition} - Quantity : {item.quantity}</Text>
 					</View>
 				)}
-				keyExtractor={(item) => item.id.toString() + '_' + item.collectionData.type.toString()}
+				keyExtractor={(item, index) => 'key'+index}
 			/>
 		)
 	}
@@ -142,53 +142,48 @@ class CardModal extends React.Component {
 					{/* Content */}
 					<View style={styles.content}>
 						{/* Image */}
-						{/* <Image
+						<Image
 							style={styles.image}
 							source={{ uri: card.imageUrl }}
-						/> */}
+						/>
 						{selectModeEnabled &&
 						<View>
-							<Text> Ajouter </Text>
+							
 							{/* Qte */}
+							<Text>Quantity</Text>
 							<Input
-								placeholder='Quantite'
 								keyboardType="numeric"
+								maxLength = {2}
 								onChangeText={(value) =>
 									this.setState({selectedCardQuantity: value})
 								}
 							/>
 							{/* Type */}
+							<Text>Type</Text>
 							<Picker
 								selectedValue={this.state.selectedCardType}
 								onValueChange={(itemValue, itemIndex) =>
 									this.setState({selectedCardType: itemValue})
 								}>
-								<Picker.Item label="Rarete" value="normal" />
 								<Picker.Item label="Normal" value="normal" />
 								<Picker.Item label="Foil" value="foil" />
 							</Picker>
 							{/* State */}
+							<Text>Condition</Text>
 							<Picker
 								selectedValue={this.state.selectedCardCondition}
 								onValueChange={(itemValue, itemIndex) =>
 									this.setState({selectedCardCondition: itemValue})
 								}>
-								<Picker.Item label="Etat" value="" />
-								<Picker.Item label="Excellent" value="1" />
-								<Picker.Item label="Bon" value="2" />
-								<Picker.Item label="Moyen" value="3" />
-								<Picker.Item label="Mauvais" value="4" />
+								<Picker.Item label="Excellent" value="excellent" />
+								<Picker.Item label="Good" value="good" />
+								<Picker.Item label="Poor" value="poor" />
 							</Picker>
 						</View>
 						}
-						{isCollected &&
-							<Text> Exemplaires </Text>
-						}
-						{isCollected &&
-						<View>
-							{this._displayAllCollectedCardWithTypes(card.id)}
-						</View>
-						}
+						{/* Detail de collection */}
+						{isCollected && <Text> Exemplaires </Text>}
+						{isCollected && this._displayAllCollectedCardWithTypes(card.id)}
 					</View>
 
 					{/* Footer */}
