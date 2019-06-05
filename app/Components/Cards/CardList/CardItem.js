@@ -2,7 +2,6 @@ import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Dimensions, CheckBox, PureComponent  } from 'react-native'
 import { Overlay } from 'react-native-elements'
 import moment from 'moment'
-import FadeIn from '../Animation/FadeIn'
 import { connect } from 'react-redux'
 import { Icon } from 'expo';
 

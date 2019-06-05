@@ -1,8 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, TextInput, Button, Text, FlatList, ActivityIndicator } from 'react-native'
 import CardList from './CardList/CardList'
-import CardSetList from './CardSetList'
-import { getAllCards } from '../api/cards.api'
+import { getAllCards } from '../../Api/cards.api'
 
 class Search extends React.Component {
 
@@ -63,7 +62,6 @@ class Search extends React.Component {
                     onSubmitEditing={() => this._searchCards()}
                 />
                 <Button title='Rechercher' onPress={() => this._searchCards()} />
-                {/* <CardSetList /> */}
                 <CardList
                     cards={this.state.cards}
                     navigation={this.props.navigation}

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, FlatList, SectionList, Text, View } from 'react-native'
 import CardSetsListItem from './CardSetsListItem'
 import { connect } from 'react-redux'
-import { getCardSetsStandard, getCardSets } from '../../api/cards.api'
+import { getCardSetsStandard, getCardSets } from '../../../Api/cards.api'
 import numeral from 'numeral'
 import { Icon } from 'react-native-elements'
 

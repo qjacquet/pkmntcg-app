@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, ActivityIndicator, ScrollView, Image, TouchableOpacity, Share, Platform } from 'react-native'
-import { getCardDetails } from '../api/cards.api'
+import { getCardDetails } from '../../../Api/cards.api'
 import moment from 'moment'
 import numeral from 'numeral'
 import { connect } from 'react-redux'
@@ -114,9 +114,7 @@ class CardDetail extends React.Component {
         <TouchableOpacity
           style={styles.share_touchable_floatingactionbutton}
           onPress={() => this._shareCard()}>
-          <Image
-            style={styles.share_image}
-            source={require('../Images/ic_share.png')} />
+				<Text>sdfsq</Text>
         </TouchableOpacity>
       )
     }

@@ -1,5 +1,4 @@
 import { createStore } from 'redux'
-import toggleCardSet from './Reducers/cardSearchFilterReducer'
 import toggleCard from './Reducers/cardListReducer'
 import collection from './Reducers/cardCollectionReducer'
 import { persistCombineReducers } from 'redux-persist'

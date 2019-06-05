@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, FlatList, View, ActivityIndicator, Text, Dimensions } from 'react-native'
 import { Overlay } from 'react-native-elements'
-import CardItem from '../CardItem'
+import CardItem from './CardItem'
 import { connect } from 'react-redux'
-import { getAllCards } from '../../api/cards.api'
-import CardModal from '../CardModal' 
+import { getAllCards } from '../../../Api/cards.api'
+import CardModal from './CardModal' 
 
 class CardList extends React.Component {
 

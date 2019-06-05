@@ -2,15 +2,15 @@ import React from 'react'
 import { Platform, StyleSheet } from 'react-native'
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 
-import CollectionScreen from '../screens/CollectionScreen'
-import DeckScreen from '../screens/DeckScreen'
+import CollectionScreen from '../Screens/CollectionScreen'
+import DeckScreen from '../Screens/DeckScreen'
 
-import TabBarIcon from '../components/TabBarIcon'
-import CardSearch from '../components/CardSearch'
-import CardDetails from '../components/CardDetails'
-import CardSetsList from '../components/CardSetsList/CardSetsList'
-import CardModal from '../components/CardModal'
-import CardList from '../components/CardList/CardList'
+import TabBarIcon from '../Components/TabBarIcon'
+import CardSearch from '../Components/Cards/CardSearch'
+import CardDetails from '../Components/Cards/CardList/CardDetails'
+import CardSetsList from '../Components/Cards/CardSetsList/CardSetsList'
+import CardModal from '../Components/Cards/CardList/CardModal'
+import CardList from '../Components/Cards/CardList/CardList'
 
 const HomeStack = createStackNavigator({
     Home: {

@@ -4,7 +4,7 @@ import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import numeral from 'numeral'
-import { getCardsFromCardSet } from '../../api/cards.api'
+import { getCardsFromCardSet } from '../../../Api/cards.api'
 
 
 class CardSetsListItem extends React.Component {

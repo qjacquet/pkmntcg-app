@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleSheet, View, TextInput, Button, Text, FlatList, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
-import CardList from '../components/CardList/CardList'
-import CardSetsList from '../components/CardSetsList/CardSetsList'
-import { getCardSets } from '../api/cards.api'
+import CardList from '../app/Components/CardList/CardList'
+import CardSetsList from '../Components/Cards/CardSetsList/CardSetsList'
+import { getCardSets } from '../Api/cards.api'
 
 class CardListScreen extends React.Component {
 
