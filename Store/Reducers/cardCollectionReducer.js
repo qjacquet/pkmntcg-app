@@ -27,6 +27,7 @@ function collection(state = initialState, action) {
 			return nextState || state
 
 		case 'ADD':
+			if (action.collectionData.quantity > 0) {
 				// Premier ajout de la carte
 				if (cardIndex === -1) {
 					nextState = {
@@ -56,48 +57,7 @@ function collection(state = initialState, action) {
 						cards: [...state.cards]
 					}
 				}
-
-			// if (cardIndex !== -1) {
-			// 	const collectionDataIndex = state.cards[cardIndex].collectionData.findIndex(item => item.type === action.card.collectionData.type && item.condition === action.card.collectionData.condition)
-			// 	if (collectionDataIndex !== -1) {
-
-			// 		nextState = {
-			// 			...state,
-			// 			cards: [
-			// 				...state.cards.filter((item, index) => index != uniqueCardIndex),
-			// 				action.card
-			// 			]
-			// 		}
-			// 	}
-			// }
-			// else {
-
-			//}
-
-			// if (action.quantity > 0) {
-			// 	let adds = []
-
-			// 	for (let i=0; i < action.quantity; i++) {
-			// 		adds.push(action.card)
-			// 	}
-
-			// 	nextState = {
-			// 		...state,
-			// 		cards: [
-			// 			...state.cards,
-			// 			...adds
-			// 		]
-			// 	}
-			// }
-			// else {
-			// 	nextState = {
-			// 		...state,
-			// 		cards: [
-			// 			...state.cards,
-			// 			action.card
-			// 		]
-			// 	}
-			// }
+			}
 			return nextState || state
 			
 		// Not used

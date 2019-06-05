@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, FlatList, Text, View, Image, TouchableOpacity, Picker, SectionList } from 'react-native'
-import { Overlay, Input } from 'react-native-elements'
+import { Button } from 'react-native-elements';
+import { Overlay, Input, Divider } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { Icon } from 'expo';
 
@@ -12,8 +13,9 @@ class CardModal extends React.Component {
 			visible: false,
 			card: undefined,
 			selectedCardType: "normal",
-			selectedCardCondition: "Bon",
-			selectedCardQuantity: 0
+			selectedCardCondition: "excellent",
+			selectedCardQuantity: 0,
+			editModeEnabled: true
 		}
 
 		this.toggle = this.toggle.bind(this)
@@ -25,18 +27,18 @@ class CardModal extends React.Component {
 		return data.reduce((acc, item) => {
 			const foundIndex = acc.findIndex(element => element.key === item.type);
 			if (foundIndex === -1) {
-			  return [
-				 ...acc, 
-				 {
-					key: item.type,
-					data: [item],
-				 },
-			  ];
+				return [
+					...acc,
+					{
+						key: item.type,
+						data: [item],
+					},
+				];
 			}
 			acc[foundIndex].data = [...acc[foundIndex].data, item];
 			return acc;
-		 }, []);
-	 }
+		}, []);
+	}
 
 	toggle = (card) => {
 		if (!this.state.visible) {
@@ -44,7 +46,7 @@ class CardModal extends React.Component {
 				visible: !this.state.visible,
 				card: card,
 				selectedCardType: "normal",
-				selectedCardCondition: "Bon",
+				selectedCardCondition: "excellent",
 				selectedCardQuantity: 0
 			}, () => {
 
@@ -59,15 +61,14 @@ class CardModal extends React.Component {
 	}
 
 	_save(card, actionType) {
-		if (this.state.selectedCardQuantity > 0)
-		{
+		if (this.state.selectedCardQuantity > 0) {
 			var collectionData = {
 				type: this.state.selectedCardType,
 				condition: this.state.selectedCardCondition,
 				quantity: this.state.selectedCardQuantity
 			}
-				
-			let action = { type: actionType, card: card, collectionData: collectionData}
+
+			let action = { type: actionType, card: card, collectionData: collectionData }
 			this.props.dispatch(action)
 		}
 	}
@@ -85,8 +86,7 @@ class CardModal extends React.Component {
 
 	_getCollectionData(id) {
 		const cardIndex = this.props.collection.findIndex(item => item.id == id)
-		if (cardIndex !== -1)
-		{
+		if (cardIndex !== -1) {
 			return this.props.collection[cardIndex].collectionData
 		}
 		return null
@@ -103,10 +103,10 @@ class CardModal extends React.Component {
 				renderSectionHeader={this._renderSection}
 				renderItem={({ item }) => (
 					<View>
-						<Text>Condition : {item.condition} - Quantity : {item.quantity}</Text>
+						<Text>{item.quantity} pcs in {item.condition} condition</Text>
 					</View>
 				)}
-				keyExtractor={(item, index) => 'key'+index}
+				keyExtractor={(item, index) => 'key' + index}
 			/>
 		)
 	}
@@ -118,6 +118,22 @@ class CardModal extends React.Component {
 			</View>
 		)
 	}
+
+	_renderSolidButton = (text, onPress) => (
+		<Button
+			buttonStyle={styles.button}
+			title={text}
+			onPress={onPress}
+		/>
+	);
+
+	_renderClearButton = (text, onPress) => (
+		<Button
+			title={text}
+			onPress={onPress}
+			type="clear"
+		/>
+	);
 
 	render() {
 		const card = this.state.card;
@@ -142,44 +158,59 @@ class CardModal extends React.Component {
 					{/* Content */}
 					<View style={styles.content}>
 						{/* Image */}
-						<Image
+						{/* <Image
 							style={styles.image}
 							source={{ uri: card.imageUrl }}
-						/>
-						{selectModeEnabled &&
-						<View>
-							
-							{/* Qte */}
-							<Text>Quantity</Text>
-							<Input
-								keyboardType="numeric"
-								maxLength = {2}
-								onChangeText={(value) =>
-									this.setState({selectedCardQuantity: value})
-								}
-							/>
-							{/* Type */}
-							<Text>Type</Text>
-							<Picker
-								selectedValue={this.state.selectedCardType}
-								onValueChange={(itemValue, itemIndex) =>
-									this.setState({selectedCardType: itemValue})
-								}>
-								<Picker.Item label="Normal" value="normal" />
-								<Picker.Item label="Foil" value="foil" />
-							</Picker>
-							{/* State */}
-							<Text>Condition</Text>
-							<Picker
-								selectedValue={this.state.selectedCardCondition}
-								onValueChange={(itemValue, itemIndex) =>
-									this.setState({selectedCardCondition: itemValue})
-								}>
-								<Picker.Item label="Excellent" value="excellent" />
-								<Picker.Item label="Good" value="good" />
-								<Picker.Item label="Poor" value="poor" />
-							</Picker>
-						</View>
+						/> */}
+
+						{/* Form */}
+						{selectModeEnabled && !isCollected &&
+							<View>
+								<View style={styles.row}>
+									{/* Type */}
+									<View style={styles.inputWrap}>
+									<Text>Type</Text>
+									<Picker
+										selectedValue={this.state.selectedCardType}
+										onValueChange={(itemValue, itemIndex) =>
+											this.setState({ selectedCardType: itemValue })
+										}>
+										<Picker.Item label="Normal" value="normal" />
+										<Picker.Item label="Foil" value="foil" />
+									</Picker>
+									</View>
+								</View>
+
+								<View style={styles.row}>
+									{/* Condition */}
+									<View style={styles.inputWrap}>
+										<Text>Condition</Text>
+										<Picker style={styles.conditionPicker}
+											selectedValue={this.state.selectedCardCondition}
+											onValueChange={(itemValue, itemIndex) =>
+												this.setState({ selectedCardCondition: itemValue })
+											}>
+											<Picker.Item label="Excellent" value="excellent" color="green" />
+											<Picker.Item label="Good" value="good" color="gold" />
+											<Picker.Item label="Poor" value="poor" color="red" />
+										</Picker>
+									</View>
+
+									{/* Qte */}
+									<View style={styles.inputWrap}>
+										<Text>Quantity</Text>
+										<Input style={styles.quantityInput}
+											keyboardType="numeric"
+											placeholder="Number"
+											maxLength={2}
+											onChangeText={(value) =>
+												this.setState({ selectedCardQuantity: value })
+											}
+										/>
+									</View>
+								</View>
+
+							</View>
 						}
 						{/* Detail de collection */}
 						{isCollected && <Text> Exemplaires </Text>}
@@ -189,8 +220,10 @@ class CardModal extends React.Component {
 					{/* Footer */}
 					<View style={styles.footer}>
 						{selectModeEnabled &&
-						<View>
-						</View>
+							<View style={styles.buttons_row}>
+								{this._renderClearButton("Cancel", this.toggle)}
+								{this._renderSolidButton("Save", this.toggle)}
+							</View>
 						}
 					</View>
 				</View>
@@ -212,6 +245,7 @@ const styles = StyleSheet.create({
 	},
 	footer: {
 		flex: 1,
+		marginTop: 20
 	},
 	image: {
 		flex: 2,
@@ -219,7 +253,25 @@ const styles = StyleSheet.create({
 		height: 300,
 		resizeMode: 'contain'
 	},
-
+	buttons_row: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'flex-end'
+	},
+	button:{
+		paddingLeft: 20,
+		paddingRight: 20,
+		marginLeft: 10
+	},
+	row: {
+		flexDirection: "row",
+		margin: 10
+	},
+	inputWrap: {
+		flex: 1,
+		justifyContent: 'space-between',
+		flexDirection: 'column'
+	},
 })
 
 const mapStateToProps = state => {
@@ -228,4 +280,4 @@ const mapStateToProps = state => {
 	}
 }
 
-export default connect(mapStateToProps, null, null, {forwardRef : true})(CardModal)
+export default connect(mapStateToProps, null, null, { forwardRef: true })(CardModal)
