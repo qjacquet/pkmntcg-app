@@ -1,9 +1,12 @@
 import React from 'react'
-import { Platform, StyleSheet } from 'react-native'
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
+import { Platform, StyleSheet, Image, View } from 'react-native'
+import { createStackNavigator, createBottomTabNavigator, TabNavigator } from 'react-navigation'
+import { Icon } from 'react-native-elements'
 
 import CollectionScreen from '../Screens/CollectionScreen'
 import DeckScreen from '../Screens/DeckScreen'
+import ChatbotScreen from '../Screens/ChatbotScreen'
+import ScanScreen from '../Screens/ScanScreen'
 
 import TabBarIcon from '../Components/TabBarIcon'
 import CardSearch from '../Components/Cards/CardSearch'
@@ -12,6 +15,11 @@ import CardSetsList from '../Components/Cards/CardSetsList/CardSetsList'
 import CardModal from '../Components/Cards/CardList/CardModal'
 import CardList from '../Components/Cards/CardList/CardList'
 
+import TabBarMainButton from '../Components/TabBarMainButton'
+
+/**
+ * Déclaration des menu de navigation
+ */
 const HomeStack = createStackNavigator({
     Home: {
         screen: CardSearch,
@@ -69,12 +77,41 @@ const DeckStack = createStackNavigator({
     }
 })
 
+const ChatbotStack = createStackNavigator({
+	ChatbotScreen: {
+		 screen: ChatbotScreen,
+		 navigationOptions: {
+			  title: 'Chatbot'
+		 }
+	}
+})
+
+const ScanStack = createStackNavigator({
+	ScanScreen: {
+		 screen: ScanScreen,
+		 navigationOptions: {
+			  title: 'Scan'
+		 }
+	}
+})
+
+/**
+ * Paramétrage des menus
+ */
+
 CollectionStack.navigationOptions = {
-    tabBarLabel: 'Collection',
+	tabBarLabel: '',
+	tabBarOptions: { showIcon: true, showLabel: false },
+    tabBarIcon: ({ tintColor }) => (
+		<Image
+		source={require('../Images/switchIcon.png')}
+		style={styles.icon}/>
+	 )
 };
 
 HomeStack.navigationOptions = {
-    tabBarLabel: 'Accueil',
+	tabBarLabel: '',
+	tabBarOptions: { showIcon: true, showLabel: false },
     tabBarIcon: ({ focused }) => (
         <TabBarIcon
             focused={focused}
@@ -87,19 +124,89 @@ HomeStack.navigationOptions = {
     ),
 };
 
+import decksIcon from '../Images/decksIcon.png';
 DeckStack.navigationOptions = {
-    tabBarLabel: 'Decks',
+	 tabBarLabel: '',
+	 tabBarOptions: { showIcon: true, showLabel: false },
+    tabBarIcon: ({ tintColor }) => (
+		<Image
+			source={decksIcon}
+			style={styles.icon}/>
+    )
 };
+
+ChatbotStack.navigationOptions = {
+	tabBarLabel: '',
+	tabBarOptions: { showIcon: true, showLabel: false },
+	tabBarIcon: ({ focused }) => (
+		 <TabBarIcon
+			  focused={focused}
+			  name={
+					Platform.OS === 'ios'
+						 ? 'ios-chatbubbles'
+						 : 'md-chatbubbles'
+			  }
+		 />
+	),
+};
+
+ScanStack.navigationOptions = {
+	tabBarLabel: '',
+	tabBarOptions: { showIcon: true, showLabel: false },
+	tabBarIcon: ({ focused }) => (
+		 <TabBarIcon
+			  isMainTab={true}
+			  color={"#f2f2f2"}
+			  focused={focused}
+			  name={
+					Platform.OS === 'ios'
+						 ? 'ios-qr-scanner'
+						 : 'md-qr-scanner'
+			  }
+		 />
+	),
+};
+
+// ScanStack.navigationOptions = {
+// 	tabBarLabel: '',
+// 	tabBarOptions: { showIcon: true, showLabel: false },
+// 	tabBarIcon: ({ focused }) => (
+// 		 <TabBarIcon
+// 			  focused={focused}
+// 			  name={
+// 					Platform.OS === 'ios'
+// 						 ? 'ios-qr-scanner'
+// 						 : 'md-qr-scanner'
+// 			  }
+// 		 />
+// 	),
+// };
 
 const styles = StyleSheet.create({
     icon: {
-        width: 30,
-        height: 30
+        width: 26,
+		  height: 26,
+		  justifyContent: 'center', 
+		  alignItems: 'center'
     }
 })
 
 export default createBottomTabNavigator({
-    CollectionStack,
-    HomeStack,
-    DeckStack
-});
+	 HomeStack,
+	 CollectionStack,
+	 ScanStack,
+	 DeckStack,
+	 ChatbotStack
+}, {
+	tabBarOptions: {
+	  activeTintColor: '#84E1BF',
+	  inactiveTintColor: 'white',
+	  labelStyle: {
+		 fontSize: 12
+	  },
+	  style: {
+		 backgroundColor: '#f2f2f2'
+	  },
+	  showLabel: false
+	}
+ });
